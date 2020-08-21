@@ -2,105 +2,98 @@ public class Ex3 {
 
 	public static void main(String[] args) {
 		/*
-		 * 가변 인자 (비정형 인자, variable Aguments)
+		 * this 키워드
+		 * - 자신의 인스턴스를 가리키는 목적으로 사용됨
+		 * - 객체(인스턴스)생성 시 참조변수 this에 
+		 *   자동으로 인스턴스 주소가 저장됨
 		 * 
-		 * - 메서드 정의 시 파라미터(매개변수)에 전달되는 인자
-		 *   유동적일 때 일정 갯수가 정해져 있지 않으므로 변수 선언이 어렵다.
-		 *   따라서, 이렇게 유동적인 인자의 갯수를 모두 처리할 수 있도록
-		 *   가변 인자를 사용하여 변수를 선언하면
-		 *   동일한 타입의 갯수가 제한이 없는 인자를 모두 전달받을 수 있다.
-		 *   
-		 * - 가변 인자 형태로 선언되는 매개변수는 전달받은 데이터를
-		 *   해당 이름을 가진 배열 형태로 관리함
-		 *   
-		 * - 가변인자에 전달될 데이터는 0개부터 자유롭게 전달 가능
+		 * 1. 레퍼런스 this
+		 * 	  - 자신의 인스턴스 주소가 저장되는 참조 변수
+		 * 	  - 모든 인스턴스에 자동으로 생성되는 변수이며,
+		 * 		객체(인스턴스)생성 시 자동으로 자신의 인스턴스 주소가 저장됨
+		 * 	  - 인스턴스변수와 로컬변수의 이름이 같을 때, 
+		 * 		로컬변수가 선언된 메서드 내에서 인스턴스변수를 가리키는 용도
+		 * 	  - 메서드 내에서 인스턴스변수와 이름이 중복되는 변수가 없으면
+		 * 		레퍼런스 this를 생략할 수 있다.
 		 * 
-		 * < 주의 사항! >
-		 * 가변 인자는 마지막 파라미터로 단 한 번만 사용 가능하다!
-		 *   
-		 * < 가변 인자를 사용한 메서드 정의 기본 문법 >
-		 * [제한자] 리턴 타입 메서드명 (데이터타입... 변수명) {
-		 * 		// => 전달 되는 데이터들이 가변인자 변수명의 배열로 관리됨
-		 * }
+		 * 	  <기본 사용 문법>
+		 * 	  this.인스턴스변수 또는 [this.]인스턴스메서드()
+		 * 
 		 */
-				
-		VariableAguments va = new VariableAguments();
-//		va.normalPrint();		// 오류 발생!
-//		va.normalPrint(10);		// 오류 발생!
-		va.normalPrint(10, 20);
-		va.normalPrint(10, 20, 30);
-//		va.normalPrint(10, 20, 30, 40);		// 오류 발생!
 		
-		System.out.println("==================================================");
+		Person3 p = new Person3("홍길동", 20);
+		System.out.println("이름 : " +p.name);
+		System.out.println("나이 : " +p.age);
 		
-		// 가변인자를 사용한 메서드 호출 시 전달할 파라미터 갯수 제한 없음
-		va.varargsPrint(10);
-		System.out.println();
-		
-		va.varargsPrint(10, 20);
-		System.out.println();
-				
-		va.varargsPrint(10, 20, 30);
-		System.out.println();
-		
-		va.varargsPrint(10, 20, 30, 40);
-		System.out.println();
-		
-		va.varargsPrint();	// 전달할 데이터가 없어도 호출 가능
-		System.out.println();
+		Person3 p2 = new Person3("이순신", 44);
+		System.out.println("이름 : " +p2.name);
+		System.out.println("나이 : " +p2.age);
 		
 	}
 
 }
 
-class VariableAguments{
+class Person3 {
 	
-	// 가변인자(비정형인자)를 활용한 메서드
-	// => 하나의 메서드 저으이만으로 갯수가 다른 파라미터를 모두 처리 가능
-	public void varargsPrint(int... nums ) {
-		// 외부로부터 전달되는 정수형 데이터는 갯수 제한없이
-		// 모두 nums 이름을 갖는 배열에 저장됨
-		// => 반복문을 사용하여 배열 내의 모든 데이터에 접근하여 저장된 데이터 사용
-		// 1) 일반 for문
-		for(int i = 0; i < nums.length ; i++) {
-			System.out.printf("%d번째 인덱스 = %d \n", i, nums[i]);
-		}
-		// 2) 향상된 for문
-		for(int num:nums) {
-			System.out.println(num + " ");
-		}
+	// 클래스 내에는 변수선언과 메서드 생성 밖에 할 수 없다.
+	
+	String name;		// 멤버변수 or 인스턴스 변수
+	int age;
+	
+	public Person3(String name, int age) {	
+		// 매개변수로 int형 로컬변수 name, age 선언
+		// => 로컬변수와 멤버변수(인스턴스변수)의 이름이 같을 떄
+		//    로컬변수가 선언된 메서드 내에서 해당 이름을 지정하면
+		// 	  로컬변수를 가리키게 된다
+//		name = name;	// 로컬변수의 데이터를 다시 로컬변수(자신)에게 저장
+//		age = age;		// 따라서, 아무런 효과가 없는 코드가 된다.
+//		=> The assignment to variable name has no effect 경고 발생!!
 		
+		// 멤버변수와 로컬변수의 이름이 같을 때 멤버변수를 지정하기 위해서
+		// 레퍼런스 this를 사용하여 멤버변수를 지정해야한다!
+		// => 일반 참조변수와 동일하게 사용하되
+		//	  자신의 인스턴스 주소가 무조건 저장되어 있음
+		// => 인스턴스를 생성할 때마다 각 인스턴스의 주소가
+		//	  각 인스턴스 내의 this에 저장되므로 각각 다른 주소를 갖게됨
+		this.name = name;		// 인스턴스변수 name에 로컬변수 name 값을 저장
+		this.age = age;			// 인스턴스변수 age에 로컬변수 age 값을 저장
+		
+		// 대명사 '나'라고 생각하면 쉬움
+		// ex) A가 나라고 하면 나 = A, B가 나라고 하면 B
 	}
 
-	// 주의 사항!
-	// 가변인자는 마지막 인자로 단 한 번만 사용 가능
-	public void varargsPring2(String title, int... nums ) {}
-		// => 가변인자 앞에 다른 매개변수가 있더라도, 마지막이 가변인자면 ok
+	// Getter/Setter 정의
+	// Getter 메서드는 로컬변수 선언이 없는 경우가 많으므로
+	// 인스턴스변수에 레퍼런스 this를 생략해도 된다!
+	public String getName() {
+		return name;
+	}
 	
-	
-//	public void varargsPring2(int... nums, String title ) {}
-		// => 가변인자 뒤에 다른 매개변수가 올 수 없다!
-	
-//	public void varargsPring2(int... nums, String... title) {}
-		// => 가변인자 뒤에 다른 매개변수가 올 수 없으므로 
-		//    2개 이상의 가변인자 사용도 불가능하다!
+	// Setter 메서드도 인스턴스변수와 로컬변수 이름이 동일하므로
+	// 인스턴스변수(좌변)에 레퍼런스 this를 사용한다!
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	
-	
-	//----------------------------------------------------------------------------
-	
-	// 정수 2개(n1, n2)를 전달받아 출력하는 print()메서드 정의
-	public void normalPrint(int n1, int n2) {
-		System.out.println(n1 + ", " + n2);
+	// Getter 메서드는 로컬변수 선언이 없는 경우가 많으므로
+	// 인스턴스변수에 레퍼런스 this를 생략해도 된다!
+	public int getAge() {
+		return age;
 	}
 	
-	// 정수 3개(n1, n2, n3)를 전달받아 출력하는 print()메서드 정의
-	public void normalPrint(int n1, int n2, int n3) {
-		System.out.println(n1 + ", " + n2 + ", " + n3);
+	// Setter 메서드도 인스턴스변수와 로컬변수 이름이 동일하므로
+	// 인스턴스변수(좌변)에 레퍼런스 this를 사용한다!
+	public void setAge(int age) {
+		this.age = age;
 	}
 	
-	// => 전달되는 데이터가 2개 또는 3개의 경우에만 메서드가 호출되고
-	//    0개, 1개 또는 4개 이상의 경우에는 일치하는 매개변수가 없으므로
-	//    호출되지 못하고 오류가 발생한다.
+	
+	
 	
 }
+
+
+
+
+
+

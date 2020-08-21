@@ -1,100 +1,68 @@
 public class Ex2 {
 
 	public static void main(String[] args) {
-		WalkBad wb = new WalkBad();
-		wb.walk();
-		wb.walk(2);
-		wb.walk(2, "m");	//m로 변환
-		wb.walk(2, "cm");	//cm로 변환
-		wb.walk(2, "inch");
-
-		// 하나의 메서드에서 다른 메서드 호출을 통해
-		// 중복 코드를 제거할 수 있으며
-		// 중복 코드를 제거하면 유지보수성이 향상됨
-		WalkGood wg = new WalkGood();
-		wg.walk();
-		wg.walk(1);
-		wg.walk(2, "cm");
-	}
-
-}	// Ex2 클래스 끝
-
-// 사람보폭을 1m = 100cm 이동거리 계산
-class WalkBad{
-	
-	// 사람의 한 걸음(보폭)의 길이 출력
-	public void walk() {
-		System.out.println("100cm 이동!");
-	}
-	
-	// 사람 걸음 수에 따른 이동 거리 출력
-	public void walk(int step) {
-		System.out.println(step * 100 + "cm 이동!");
-	}
-	
-	// 사람 걸음 수에 따른 이동거리를 지정한 단위에 따라 m로 변환 후 출력 출력
-	public void walk(int step, String unit) {
-		// 2걸음 : 100cm * 2 / 2.5 (inch)
-		// switch - case문을 사용 다누이 판별("cm", or "m")
-		double distance = 0.0;
-		switch(unit) {
-		case "cm":	
-			distance = step *100;
-			System.out.println(distance + "cm 이동!");
-			break;
-		case "m":	// step * 100 결과를 m 로 변화 하기 위해 /100
-			distance = (step *100)/100;
-			System.out.println(distance + "m 이동!");			
-			break;
-		default:		// 계산 불가능한 단위라고 가정
-			System.out.println("알 수 없는 단위이므로 이동 불가!");
-		}
-			
+		/*
+		 * 생성자 오버로딩
+		 * - 메서드 오버로딩과 기본적인 규칙 및 동작이 동일함
+		 * - 객체 생성시 다양한 타입 및 갯수의 파라미터를 갖는
+		 *   여러 생성자를 호출하여 다양한 초기화를 수행하는 용도로 사용
+		 */
+				
+		Person2 p = new Person2();
+		p.print();
 		
-	}
-	
-}	// WalkBad 클래스 끝
-
-class WalkGood{
-	
-	// 오버로딩 된 메서드끼리 수행할 작업이 중복되는 경우
-	// 하나의 메서드에서 다른 메서드를 호출하여
-	// 필요한 데이터를 전달함으로써 중복되는 코드를 제거할 수 있다!
-	
-	// 사람의 한 걸음(보폭)의 길이 출력
-	public void walk() {
-//		System.out.println("100cm 이동!");
-		walk(1, "cm");
-	}
-	
-	// 사람 걸음 수에 따른 이동 거리 출력
-	public void walk(int step) {
-//		System.out.println(step * 100 + "cm 이동!");
-		// 동일한 step * 100 계산과 "cm 이동!" 메세지를 출력하는 코드를
-		// step, unit 파라미터를 전달하는 메서드 호출을 통해 중복 제거 수행
-		walk(step, "cm");
-	}
-	
-	// 사람 걸음 수에 따른 이동거리를 지정한 단위에 따라 m로 변환 후 출력 출력
-	public void walk(int step, String unit) {
-		// ex) 2걸음, m = 100 * 2 = 200cm / 100 = 2m 결과를 출력
-		// switch - case문을 사용 다누이 판별("cm", or "m")
-		double distance = 0.0;
-		switch(unit) {
-		case "cm":	
-			distance = step *100;
-			System.out.println(distance + "cm 이동!");
-			break;
-		case "m":	// step * 100 결과를 m 로 변화 하기 위해 /100
-			distance = (step *100)/100;
-			System.out.println(distance + "m 이동!");			
-			break;
-		default:		// 계산 불가능한 단위라고 가정
-			System.out.println("알 수 없는 단위이므로 이동 불가!");
-		}
-			
+		System.out.println("-------------------------------------");	
 		
+		Person2 p1 = new Person2("홍길동");
+		p1.print();
+		
+		System.out.println("-------------------------------------");
+		
+		Person2 p2 = new Person2("황결댕", 20);
+		p2.print();
+	}
+
+}
+
+class Person2 {
+
+	String name;
+	int age;
+
+	// 1. 기본 생성자 정의
+	// => Person2() 생성자 호출됨! 출력
+	Person2() {
+		System.out.println("Person2() 생성자 호출됨!");
+	}
+
+	// 2. 이름(newName)을 전달 받아 초기화하는 생성자 정의
+	// => Person2(String) 생성자 호출됨! 출력 및 이름 초기화
+	Person2(String newName) {
+		System.out.println("Person2(String) 생성자 호출됨!");
+		name = newName;
+	}
+
+	// 3. 이름(newName)과 나이(newAge)을 전달 받아 초기화하는 생성자 정의
+	// => Person2(String, int) 생성자 호출됨! 출력 및 이름, 나이 초기화
+//	Person2(String newName, int newAge) {
+//		System.out.println("Person2(String, int) 생성자 호출됨!");
+//		name = newName;
+//		age = newAge;
+//	}
+	
+	// 생성자 자동 생성 단축키 : Alt + Shift +S -> O
+	public Person2(String name, int age) {
+		System.out.println("Person2(String, int) 생성자 호출됨!");
+		this.name = name;
+		this.age = age;
 	}
 	
-}	// WalkGood 클래스 끝
 
+	// 멤버변수(이름, 나이)를 출력하는 print()메서드
+	public void print() {
+		System.out.println("이름 : " +name);
+		System.out.println("나이 : " +age);
+	}
+
+	
+}
