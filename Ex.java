@@ -1,149 +1,86 @@
+// com.lg.tv 패키지를 소스코드에 포함시키기위한 import문 작성
+//import com.lg.tv.*;	// 패키지 내의 모든 클래스를 포함하는 경우
+import com.lg.tv.Tv;	// 패키지 내의 특정 클래스만 포함하는 경우
+
+// 주의! 패키지가 다르고 이름이 동일한 클래스는 동시에 import 불가능!
+//import com.samsung.tv.Tv;	// 오류 발생
+import com.samsung.tv.*;	// 사용 가능
+
+// 클래스명이 같을 경우 클래스명을 명시적으로 import한 것이 우선적이다!
+
 public class Ex {
 
 	public static void main(String[] args) {
-		/*
-		 * 생성자(Constructor)
-		 * - 객체를 생성할 때 new 연산자 뒤에 붙어서 호출되며,
-		 *   객체 초기화를 담당하는 메서드의 일종
-		 * - 객체 생성 시 단 한번만 호출 가능(임의로 호출 불가능)
-		 * 
-		 * - 메서드와 다른 점
-		 *   1) 생성자의 이름은 반드시 클래스명과 동일해야한다.
-		 *   2) 리턴타입을 기술하지 않는다(void도 사용하지 않음)
-		 * 
-		 * - 클래스 정의시 생성자를 하나도 정의하지 않을 경우
-		 *   컴파일러에 의해 기본 생성자(default Constructor)가
-		 *   자동으로 생성됨(public 클래스명 {})
-		 *   => 매개변수가 없고, 중괄호 블록 내에 코드가 없는 빈 생성자
-		 *   
-		 * < 생성자 정의 기본 문법 >
-		 * [접근제한자] 클래스명 ([매개변수...]) {
-		 * 		// 생성자 호출(객체 생성)시 수행할 코드들....
-		 * }
-		 * 
-		 * < 기본 생성자 형태 >
-		 * public 클래스명() {}
-		 * 
-		 */		
+	/*
+	 *  패키지(Package) 및
+	 *  - 클래스 파일이 위치하는 물리적 폴더 구조
+	 *  - 패키지가 다르면 같은 이름의 클래스도 각각 별도로 관리가 가능함
+	 *  - 패키지명은 상위패키위와 하위패키지로 구분하여
+	 *    패키지 내에 다른 패키지를 생성할 수  있음
+	 *    => 각 패키지 단계를 마침표(.)로 구분하여 지정
+	 *  - 패키지명은 보통 각 회사의 모메인 이름을 사요하며
+	 *    도메인 이름을 상위도메인부터 역순으로 나열하여 지정
+	 *    (ex. samsung.com 일 경우 com.samsung으로 지정)
+	 *  - 특정 패키지에 소속된 클래스의 소스코드 최상단에는 반드시
+	 *    package 키워드를 사용하여 소속 패키지의 이름을 명시해야함!
+	 *    => 단, 하나의 클래스는 하나의 패키지에 소속되므로
+	 *       package문은 소스 코드 최상단에서 단 한 번만 선언됨!
+	 *  - 특정 클래스의 이름을 나타내는 기본적인 규칙은
+	 *     " 패키지명.클래스명 "의 형태로 지정하는 것이 기본
+	 *    현재 패키지 내에 중복되는 클래스가 없을 경우 패키지명 생략 가능
+	 *  
+	 *  < 기본 문법 >
+	 *  package  상위패키지명.하위패키지명;
+	 *    
+	 *    
+	 *  [ import문 ]
+	 *  - 특정 패키지에 소속된 클래스를 소스코드에 포함시키는 문
+	 *  - 해당 패키지명과 클래스명을 조합하여 특정 클래스를 지정하거나
+	 *    클래스명 대신 *기호로 해당 패키지의 모든 클래스를 지정 가능
+	 *  - package 문과 class 선언부 사이에 위치하며
+	 *    package 문과 달리 갯수제한 없이 여러번 사용 가능
+	 *  - 자동 import 단축키 : Ctrl + Shift + O
+	 *  - java.lang 패키지는 유일하게 import문 생략이 가능한 패키지이다!
+	 *    (자바에서 가장 기본이 되는 패키지이므로 자동으로 포함됨)
+	 *    
+	 *  < 기본 문법 >
+	 *  import 상위패키지명.하위패키지명.클래스명
+	 *  import 상위패키지명.하위패키지명.*;
+	 */
 		
-		// Person 클래스 인스턴스 생성
-		Person p = new Person();
-		// => Person 클래스의 매개변수가 없는 Person() 생성자를 호출
-		//	  만약, Person() 생성자가 없으면 컴파일러에 자동으로 생성
+		// 원래 사용하던 클래스 지정 방식(패키지명을 생략하고 사용)
 		
-		// 이름 : 홍길동, 나이 : 20 으로 초기화 
-		p.name = "홍길동";
-		p.age = 20;
-		
-		System.out.println("이름 : "+p.name+", 나이 : "+p.age);
-		
-		System.out.println("-----------------------------");
-				
-		DefaultPerson dp = new DefaultPerson();
-		// new DefaultPerson() 코드에 의해 객체 생성 시점에서
-		// DefaultPerson() 생성자가 호출됨
-		
-		System.out.println("이름 : " +dp.name);
-		System.out.println("나이 : " +dp.age);
-		
-		System.out.println("-----------------------------");
-		
-		// 파라미터 2개 (String, int)를 전달받는 생성자 ParametePerson()호출
-		ParameterPerson pp = new ParameterPerson("홍길동", 20);
-		// => 객체 생성시 전달된 데이터를 사용하여 생성자에서 초기화
-		System.out.println("이름 : " +pp.name);
-		System.out.println("나이 : " +pp.age);
-		
-		// 파라미터 생성자가 1개 존재하는 클래스의 기본 생성자를 호출하면
-		// 자동으로 생성되지 않기 때문에 컴파일 에러
-//		ParameterPerson pp2 = new ParameterPerson());	// 컴파일 에러 발생!!
-		// => The constructor ParameterPerson() is Undefined
+		String str = "홍길동";
 		
 		
-	}
-
-}
-
-/*
- * Person 클래스 정의
- * 멤버변수 : 이름(name, 문자열), 나이(age, 정수형)
- */
-class Person{
-	// 생성자가 하나도 정의되지 않은 클래스는 컴파일러에 의해
-	// 기본 생성자가 자동으로 생성됨
-	
-	//public Person() {}
-	// => 컴파일러에 의해 생성될 기본 생성자
-	
-	String name;
-	int age;
-	
-}
-
-// 파라미터가 없는 기본 생성자
-class DefaultPerson{
-	
-	String name;
-	int age;
-	
-	// 매개변수가 없는 기본 생성자와 동일한 형태의 생성자를 저으이
-	// => 출력문을 사용하여 메세지 출력
-	public DefaultPerson() {
-		// DefaultPerson 클래스의 인스턴스가 호출될 때
-		// 생성자가 호출되며, 내부의 코드가 실행됨
-		System.out.println("DefaultPerson() 생성자 호출됨!!");
+		// 실제  String 클래스를 지정하는 정석적인 방법
+		// => java.lang 패키지 내에 위치하므로
+		java.lang.String str2 = "홍길동";
 		
-		// 생성자에서는 주로 멤버변수의 초기화나 다른 메서드의 호출을 통해
-		// 객체가 실행될 때 수행할 초기 작업을 수행하는 내용이 기술됨
-		name = "홍길동";
-		age = 20;
+		// com.lg.tv 패키지의 Tv클래스 지정하여 객체생성
+//		com.lg.tv.Tv tv = new com.lg.tv.Tv();
 		
-	};
-	
-	
-	
-}
-
-// 파라미터가 1개 이상인 파라미터 생성자 정의
-class ParameterPerson{
-	// 관례적으로 변수 -> 생성자 -> 메서드 순으로 정의
-	String name;
-	int age;
-	
-	// 일반 메서드와 동일하게 생성자에 전달할 데이터가 있을 경우
-	// 생성자 정의시 파라미터 부분에 매개변수를 선언할 수 있다.
-	// 이름(newName)과 나이(newAge)를 전달받는 파라미터 생성자 정의
-	// => "ParameterPerson(String, int)생성자 호출됨!" 출력 후
-	//	  이름과 나이를 멤버변수에 저장
-	
-	ParameterPerson(String newName, int newAge) {
-		System.out.println("ParameterPerson(String, int) 생성자 호출됨!");
-		// => 생성자 호출 시 전달받는 데이터를 사용하여 멤버변수 초기화
+		// com.lg.tv패키지명을 생략하기 위해서는
+		// 해당 패키지를 import문을 통해 포함 시켜야함
+		Tv tv= new Tv();
 		
-		name = newName;
-		age = newAge;
+		// com.samsung.tv 패키지 내의 Tv클래스를 사용해야하는 경우
+		// => 이미 com.lg.tv 패키지의 Tv클래스가 import되어 있으므로
+		//    다른 패키지의 Tv클래스는 패키지명을 포함해서 지정해야함
+		// 	  (동일한 클래스를  import할 수 없다!)
+		
+//		com.samsung.tv.Tv Tv2 = new com.samsung.tv.Tv();	
+		
+		// import문을 사용하여 "com.lg.tv.Tv" 위치를 지정했을 겨웅
+//		LgTv lgTv = new LgTv();	// 사용 불가능(위치를 모르기 떄문_
+//		 => 해결책 : import문을 추가하거나 tv.*로 변경해야함
+//					 패키지명.클래스명 형태로 지정
+		
+		
+		// import문을 사용하여 "com.samsung.tv.*" 위치를 지정했을 경우
+		SamsungTv samsungTv = new SamsungTv();	// 사용가능
+		
 		
 	}
-	// => 파라미터 생성자를 하나라도 정의하게 되면
-	//	  기본 생성자는 더 이상 자동으로 생성되지 않는다.
-	
-	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
