@@ -1,22 +1,32 @@
-public class Test {
+public class Test4 {
 
 	public static void main(String[] args) {
 		
-		itwillBank ib = new itwillBank();
+		itwillBank4 ib = new itwillBank4();
 		
 		ib.accountNo = "111-1111-111";
 		ib.ownerName = "홍길동";
-		ib.deposit(100000);
-		System.out.println("출금된 금액 : " + ib.withdraw(50000));
-		ib.contract("자동차보험");
-		ib.print();
+		ib.insureName = "자동차보험";
 		
+		ib.printAccountInfo();
+		
+		System.out.println("=====================================");
+		
+		KakaoBank kb = new KakaoBank();
+		
+		kb.accountNo = "012-3456-789";
+		kb.ownerName = "카카오";
+		kb.deposit(1000000);
+		kb.withdraw(50000);
+		kb.kakaoPayBalance = 30000;
+		
+		kb.printAccountInfo();
 		
 	}
 
 }
 
-class Account{
+class Account4{
 	/*
 	 * 은행계좌(Account) 클래스 정의 멤버변수 
 	 * 1) 계좌번호(accountNo, 문자열), ex) "111-1111-111" 
@@ -55,6 +65,14 @@ class Account{
 		System.out.println("입금 후 잔고 " +balance + "원");
 	}
 	
+	public void printAccountInfo() {
+		// 계좌 기본 정보를 출력하는 메서드
+		System.out.println("계좌번호 : " + accountNo);
+		System.out.println("예금주명 : " + ownerName);
+		System.out.println("현재잔고 : " + balance);
+		
+	}
+	
 
 	public int withdraw(int amount) {
 		
@@ -84,7 +102,9 @@ class Account{
 //	  => 전달받은 보험명을 멤버변수에 전달하고
 //		 "계약하신 보험명 : xxx보험입니다." 출력
 
-class itwillBank extends Account {
+class itwillBank4 extends Account4 {
+
+
 	String insureName;
 	
 	public void contract(String insureName) {
@@ -92,11 +112,34 @@ class itwillBank extends Account {
 		System.out.println("계약하신 보험명 : " +insureName +"입니다.");
 	}
 	
-	public void print() {
+	// Account4 클래스의 printAccointinfo() aptjemfmf dhqjfkdleld gkdu
+	// 계좌번호, 예금주명, 현재잔고, 보험명을 출력
+	@Override
+	public void printAccountInfo() {
 		System.out.println("계좌번호 : " + accountNo);
 		System.out.println("예금주명 : " + ownerName);
 		System.out.println("현재잔고 : " + balance);
-		System.out.println("보 험 명 : " + insureName);
-		
+		System.out.println("보험명 : " +insureName);
 	}
+		
+}
+
+// KakaoBank 클래스 정의 - Accoount4 클래스 상속
+// => 멤버변수 : 카카오페이잔고 (int형 kakaoPayBalance)
+// => printAccountInfo() 메서드 오버라이딩
+//    계좌번호, 예금주명, 현재잔고, 카카오페이잔고 출력
+
+class KakaoBank extends Account4 {
+
+	int kakaoPayBalance;
+	
+	@Override
+	public void printAccountInfo() {
+		System.out.println("계좌번호 : " + accountNo);
+		System.out.println("예금주명 : " + ownerName);
+		System.out.println("현재잔고 : " + balance);
+		System.out.println("카카오페이잔고 : " +kakaoPayBalance);
+	}
+
+	
 }

@@ -2,68 +2,126 @@ public class Ex4 {
 
 	public static void main(String[] args) {
 		/*
-		 * 생성자 this()
-		 * - 생성자 내에서 자신의 인스턴스 내의 다른 생성자를 호출
-		 * - 생성자 초기화 코드가 중복될 때 중복 제거를 위해
-		 *   하나의 생성자에서만 초기화 코드를 작성하고
-		 *   나머지 다른 생성자는 해당 생성자 호출을 통해 데이터만 전달하여
-		 *   초기화 코드의 중복을 제거하는 용도로 사용
-		 *   
-		 * - 주의 사항!!!!!!
-		 * 	  생성자 this()는 반드시 생성자 내의 첫문장에서 호출되어야한다!  
-		 *   
-		 *   <기본 사용 문법>
-		 *  this([생성자에 전달할 데이터...]);
+		 * 메서드 오버라이딩(Method Overriding) - 메서드 재정의
+		 * - 슈퍼클래스로부터 상속받은 메서드와 시그니처가 동일한 메서드를
+		 *   서브클래스에서 새롭게 재정의하는 것!
+		 * - 기존의 슈퍼클래스의 메서드를 수정하여 덮어 쓰는 것!
+		 * - 오버라이딩 이후에는 슈퍼클래스의 메서드는 은닉되어 보이지 않음!
+		 * 
+		 * - 오버라이딩을 사용하는 이유 
+		 * 	 => 코드의 재사용성이 향상되고, 통일성이 제공됨
+		 * 
+		 * - 오버라이딩 단축키 : Alt + Shift + S -> V
+		 * 	 => 자동 오버라이딩을 수행하면 @Override 어노테이션이 붙게됨
+		 *   	오버라이딩 규칙을 위반하면 오류가 발생하도록 함
+		 *   	(ex. 오버로딩, 오타로 인한 이름 입력 오류 등)
+		 *  
+		 * 
+		 * < 오버라이딩 작성 규칙 >
+		 * 1. 슈퍼클래스의 메서드 시그니처 (이름, 파라미터, 리턴타입)가
+		 *    완벽하게 동일해야한다.
+		 * 2. 슈퍼클래스 메서드의 접근제한자보다 범위가 좁아질 수 없다!!
+		 *    (ex. 슈퍼클래스가 public이면 서브클래스도 public여야 한다.)
+		 *    (ex. 슈퍼클래스가 protected이면 서브클래스는 public 또는 protected여야 함!)
 		 */
+
+		Child4 c = new Child4();
 		
-		Person4 p = new Person4();
-		System.out.println("이름 : "+p.name);
-		System.out.println("나이 : "+ p.age);
-		System.out.println("--------------------------------");
+		c.childPrn();	// 서브클래스에서 정의한 메서드
+		c.parentPrn();	// 서브클래스에서 오버라이딩된 메서드
+		// => 슈퍼클래스(Parent4의 parentPrn() 메서드는 보이지 않으므로
+		//    접근이 불가능하게 됨(은님됨)
+	
+		System.out.println("====================================================");
 		
-		Person4 p1 = new Person4("신길동");
-		System.out.println("이름 : "+p1.name);
-		System.out.println("나이 : "+ p1.age);
-		System.out.println("--------------------------------");
+		// Car 클래스를 상속받은 DieselCar 와 ElectricCar 클래스의
+		// 인스턴스를 생성하여 오버라이딩 된 메서드를 각각 호출
+		DieselCar dc = new DieselCar();
 		
-		Person4 p2 = new Person4("장우동", 30);
-		System.out.println("이름 : "+p2.name);
-		System.out.println("나이 : "+ p2.age);
+		dc.speedUp();
+		dc.speedDown();
+		dc.addFuel();
+		
+		ElectricCar ec = new ElectricCar();
+		
+		ec.speedUp();
+		ec.speedDown();
+		ec.addFuel();
+		
 	}
 
 }
 
-class Person4 {
-	String name;
-	int age;
-	
-	// 기본 생성자 정의 - 이름 : "홍길동", 나이 : 0 초기화
-	public Person4() {
-//		name = "홍길동";
-//		age = 0;
-//		다른 생성자 Person4(String, int)를 호출하여 대신 초기화 요청
-//		=> 생성자는 new 이외에 호출이 불가능하며 생성자 this()필수!!
-		this("홍길동", 0);	
-		System.out.println("Person4()생성자 호출됨!");
-//		this("홍길동", 0);
-		// => 생성자 this()는 반드시 생성자 내의 첫문장에서 호출되어야한다!
-		
+class Parent4 {
+	public void parentPrn() {
+		System.out.println("슈퍼클래스의 parentPrn() 메서드!");
 	}
+}
 
-	// 이름 전달받는 생성자 정의 - 나이 : 0 초기화
-	public Person4(String name) {
-//		this.name = name;
-//		age  = 0;
-		this(name, 0);
-		System.out.println("Person4(String)생성자 호출됨!");
+class Child4 extends Parent4 {
+	public void childPrn() {
+		System.out.println("서브클래스의 childPrn() 메서드!");
 	}
 	
-	// 이름, 나이 전달받는 생성자 정의
-	public Person4(String name, int age) {
-		this.name = name;
-		this.age = age;
-		System.out.println("Person4(String, int)생성자 호출됨!");
+	// 슈퍼클래스로부터 상속받은 parentPrn() 메서드 오버라이딩
+	// => 리턴타입, 이름, 파라미터가 모두 동일해야함
+	// => 접근제한자는 좁아질 수 없음
+	public void parentPrn() {
+		System.out.println("서브클래스에서 오버라이딩된 parentPrn() 메서드!");
+	}
+}
+
+// ----------------------------------------------------------------------------
+
+class Car {
+	
+	public void speedUp() {
+		System.out.println("자동차 속력 증가!");
+	}
+	
+	public void speedDown() {
+		System.out.println("자동차 속력 감소!");
+	}
+	
+	public void addFuel() {
+		System.out.println("자동차 연료 공급!");
+	}
+	
+	
+}
+
+// 디젤 자동차 - Car클래스 상속
+class DieselCar extends Car {
+	// Car클래스의 메서드 오버라이딩하여 DieselCar만의 기능을 재정의
+	public void speedUp() {
+		System.out.println("DieselCar 방식으로 속력 증가!");
+	}
+	
+	public void speedDown() {
+		System.out.println("DieselCar 방식으로 속력 감소!");
+	}
+	
+	public void addFuel() {
+		System.out.println("주유소에서 디젤 연료 공급!");
+	}
+}
+// 전기 자동차 - Car클래스 상속
+class ElectricCar extends Car {
+
+	@Override	// annotation
+	public void speedUp() {
+		System.out.println("ElectricCar 방식으로 속력 증가!");
 	}
 
+	@Override
+	public void speedDown() {
+		System.out.println("ElectricCar 방식으로 속력 감소!");
+	}
+
+	@Override
+	public void addFuel() {
+		System.out.println("전기 충전소에서 배터리 충전!");
+	}
+	// 자동 오버라이딩 단축키 : Alt + Shift + S => V
 	
 }
