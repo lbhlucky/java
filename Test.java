@@ -2,101 +2,57 @@ public class Test {
 
 	public static void main(String[] args) {
 		
-		itwillBank ib = new itwillBank();
+		SpiderMan sm = new SpiderMan();
 		
-		ib.accountNo = "111-1111-111";
-		ib.ownerName = "홍길동";
-		ib.deposit(100000);
-		System.out.println("출금된 금액 : " + ib.withdraw(50000));
-		ib.contract("자동차보험");
-		ib.print();
+		sm.isSpider = true;	// 스파이더 모드 설정
 		
+		sm.jump();	// 스파이더맨 클래스의 점프 기능 호출
+		
+		sm.isSpider = false;	// 스파이더 모드 해제
+		
+		sm.jump(); 	// SpiderMan 클래스의 jump() 메서드에서
+		// 슈퍼클래스인 Person 클래스의 점프 기능이 호출됨
 		
 	}
 
 }
 
-class Account{
-	/*
-	 * 은행계좌(Account) 클래스 정의 멤버변수 
-	 * 1) 계좌번호(accountNo, 문자열), ex) "111-1111-111" 
-	 * 2) 예금주명(ownerName, 문자열), ex) "홍길동"
-	 * 3) 현재잔고(balance, 정수) ex) "1000000"
-	 */
+class Person {
+	String name;
+	int age;
 	
-	String accountNo, ownerName;
-	int balance;
-
-	/*
-	 * 메서드 정의
-	 * 1) 입금(deposit)
-	 *    - 매개변수 1개 (정수형 amount)
-	 *    - 리턴값 없음
-	 *    - 입금할 금액(amount)를 전달 받아 현재잔고에 누적 후
-	 *      입금된 금액 : xxxxx원
-	 *      현재 잔고 : xxxx원
-	 * 2) 출금(withdraw)
-	 *    - 매개변수 1개 정수형(amount) - 출금할 금액
-	 *    - 리턴값 있음(int - 출금된 금액)
-	 *    - 출금할 금액(amount)를 전달 받아 현재잔고(balance)와 비교
-	 *      => 만약, 현재잔고보다 출금할 금액이 클 경우 출금 불가능 하므로
-	 *         "출금 불가!(잔액 부족!)" 출력
-	 *         출금할 금액 : xxxx원, 현재잔고 : xxxx원" 출력 후 메서드 종료
-	 *      => 아니면(현재잔고보다 출금할 금액이 크지 않을 경우) 출금 가능하므로
-	 *         출금할 금액만큼 현재잔고(balance)에서 차감한 후
-	 *         출금할 금액 만큼 리턴
-	 */
-	
-	public void deposit(int amount) {
-				
-		balance += amount;
-		
-		System.out.println("입금된 금액 : " +amount + "원");
-		System.out.println("입금 후 잔고 " +balance + "원");
+	public void eat() {
+		System.out.println("밥 먹기!");
 	}
 	
+	public void jump() {
+		System.out.println("일반인의 점프!");
+	}
+	
+}
 
-	public int withdraw(int amount) {
-		
-		
-		System.out.println("현재 잔고 " +balance + "원");
-		if(balance >= amount) {
-			balance -= amount;
-			System.out.println("출금 금액 : " +amount+"원");
-			System.out.println("출금 후 잔고 " +balance + "원");
-		} else{
-			System.out.println("출금 불가!(잔액 부족!)");
-			System.out.println("출금 요청 금액 : " +amount +"원"+", 출금 후 잔고 " +balance + "원");
-			
-			amount = 0;
+class SpiderMan extends Person {
+	// 스파이더맨모드 여부를 저장하는  boolean 타입 변수 isSpider 선언
+	boolean isSpider;
+	
+	public void fireWeb() {
+		System.out.println("거미줄 발사!!!");
+	}
+
+	// Person 클래스의 jump() 메서드 오버라이딩
+	@Override
+	public void jump() {
+		// 스파이더모드(isSpider)가 true일 때,
+		// "스파이더맨의 엄청난 점프!" 출력
+		// Person 클래스 jump() 메서드를 호출
+		if(isSpider) {	// isSpider == true와 동일
+		System.out.println("스파이더맨의 엄청난 점프!");
+		} else {
+			// 슈퍼클래스의 jump()메서드 호출
+			// => 은닉되어 있으므로 레퍼런스 super를 사용하여 호출
+			super.jump();
 		}
-		return amount;
-		
-		
-	}
-		
-}
-
-// Account 클래스를 상속받는 itwillBank 클래스 정의
-// 보험명(insureName, 문자열) 변수 선언
-// 보험계약(contract()) 메서드 정의
-// => 파리미터(String, insureName), 리턴값 없음
-//	  => 전달받은 보험명을 멤버변수에 전달하고
-//		 "계약하신 보험명 : xxx보험입니다." 출력
-
-class itwillBank extends Account {
-	String insureName;
 	
-	public void contract(String insureName) {
-		this.insureName = insureName;
-		System.out.println("계약하신 보험명 : " +insureName +"입니다.");
 	}
 	
-	public void print() {
-		System.out.println("계좌번호 : " + accountNo);
-		System.out.println("예금주명 : " + ownerName);
-		System.out.println("현재잔고 : " + balance);
-		System.out.println("보 험 명 : " + insureName);
-		
-	}
 }

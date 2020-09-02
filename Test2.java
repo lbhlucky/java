@@ -2,101 +2,67 @@ public class Test2 {
 
 	public static void main(String[] args) {
 		
-		// 기본 생성자 Account2() 호출
-		Account2 acc = new Account2();
-		acc.print2();
-		System.out.println("----------------------------------------");
+		Student s = new Student("이름", 20, "주민번호", "학교명", "학번");
 		
-		// 파라미터 생성자 Account2(String) 호출
-		Account2 acc1 = new Account2("012-3456-7890");
-		acc1.print2();
-		System.out.println("----------------------------------------");
-		
-		// 파라미터 생성자 Account2(String, String) 호출
-		Account2 acc2 = new Account2("000-0000-0000","황길동");
-		acc2.print2();
-		System.out.println("----------------------------------------");
-		
-		// 파라미터 생성자 Account2(String, String, int) 호출
-		Account2 acc3 = new Account2("222-2222-222", "이순신" , 100000);
-		acc3.print2();
-		
-		System.out.println("----------------------------------------");
+		System.out.println(s.getInfo());
 		
 	}
 
+}
+
+class Person2 {
+	String name;
+	int age;
+	String jumin;
+
+	public Person2(String name, int age, String jumin) {
+		super();	// 슈퍼클래스인 Object클래스의 기본생성자 호출 코드(생략 가능)
+		this.name = name;
+		this.age = age;
+		this.jumin = jumin;
+	}
+	
+	// 메서드 정의
+	// 이름, 나이, 주민번호를 문자열 결합 후 리턴하는 getInfo() 메서드 정의
+	public String getInfo() {
+		return name + ", " + age + ", " + jumin;
+	}
 }
 
 /*
- * Account2 클래스 정의
- * - 멤버변수
- *   1) 계좌번호(accountNo, 문자열)
- *   2) 예금주명(ownerName, 문자열)
- *   3) 현재잔고(balance, 정수)
- *   
- * - 기본 생성자 정의 및 다음 데이터로 초기화
- *   계좌번호 = "111-1111-111"
- *   예금주명 = "홍길동" 
- *   현재잔고 = 0 
- * 
+ * Student 클래스 정의 => Person2 상속
+ * - 멤버변수 : 학교명(schoolName, 문자열), 학번(schoolId, 문자열)
+ * - 생성자 : 이름, 나이, 주민번호, 학교명, 학번을 전달받아 초기화
+ * - 메서드 : getInfo() 메서드 오버라이딩
+ *            => 이름, 나이, 주민번호, 학교명, 학번을 문자열 결합 후 리턴 
  */
-
-class Account2 {
-	String accountNo, ownerName;
-	int balance;
+class Student extends Person2 {
+	String schoolName;
+	String schoolId;
 	
-	
-	public Account2() {
-		System.out.println("Account2 생성자 호출됨");
-		accountNo = "111-1111-111";
-		ownerName  = "홍길동";
-		balance = 0;
+	// 파라미터 생성자 정의
+	public Student(String name, int age, String jumin, String schoolName, String schoolId) {
+		// 슈퍼클래스의 파라미터 생성자 호출하여 부모의 멤버변수 대신 초기화ㄴ
+		super(name, age, jumin);
+		// 서브클래스의 멤버변수만 직접 초기화
+		this.schoolName = schoolName;
+		this.schoolId = schoolId;
 	}
 
-	// 계좌번호(accountNo)저ㅏㄴ달 받아 초기화하는 생성자 정의
-	// 예금주명 : "홍길동", 현재잔고 : 0 으로 직접 초기화
-	public Account2(String accountNo) {
-		System.out.println("Account2(String) 생성자 호출됨");
-		this.accountNo = accountNo;
-		ownerName  = "홍길동";
-		balance = 0;
-	}
 
-	public Account2(String accountNo, String ownerName) {
-		System.out.println("Account2(String, String) 생성자 호출됨");
-		this.accountNo = accountNo;
-		this.ownerName = ownerName;
-		balance = 0;
-	}
+	// getInfo() 메서드 오버라이딩
+	@Override
+	public String getInfo() {
+		
+		return super.getInfo() + ", " + schoolName + ", " + schoolId;
 
-	public Account2(String accountNo, String ownerName, int balance) {
-		System.out.println("Account2(String, String, int) 생성자 호출됨");
-		this.accountNo = accountNo;
-		this.ownerName = ownerName;
-		this.balance = balance;
-	}
-	
-	public void print2() {
-		System.out.println("계좌번호 : " +accountNo);
-		System.out.println("예금주명 : " +ownerName);
-		System.out.println("현재잔고 : " +balance);
+		// super.멤버변수명 또는 this.멤버변수명 또는 멤버변수명을 사용하여
+		// 슈퍼클래스의 멤버변수를 직접 지정도 가능
+		//	return name + ", " + age + ", " + jumin + schoolName + ", " + schoolId;
+		
 	}
 	
 	
 	
-
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,61 +2,84 @@ public class Ex3 {
 
 	public static void main(String[] args) {
 		/*
-		 * 상속에서의 생성자
-		 * - 생성자는 상속되지 않는다!
-		 * 	 => 생성자의 이름은 자신의 클래스 이름과 동일해야하므로
-		 *  	부모의 생성자를 상속받으면 클래스 이름과 다르기 때문이다. 
-		 * - 서브클래스의 인스턴스를 생성하기 위해 생성자를 호출하면
-		 *   암묵적으로 슈퍼클래스의 인스턴스가 생성되고,
-		 *   슈퍼클래스의 생성자를 호출하여 작업을 수행한 후
-		 *   서브클래스 생성자 내의 코드가 실행됨
+		 * final 키워드
+		 * - 클래스, 메서드, 변수 선언시 변경의 마지막을 지정
+		 * - 멤버변수에 final 키워드 사용 시 : 변수 값 변경 금지(= 상수로 취급됨!)
+		 * 	 => final 키워드가 붙은 변수(상수)는 일반 변수와 구분하기 위해
+		 *      대문자로 변수명을 작성함(단어 구분은 언더바(_)사용
+		 * - 메서드에 final 키워드 사용 시 : 메서드 변경 금지(= 오버라이딩 금지!)
+		 * - 클래스에 final 키워드 사용 시 : 클래스 변경 금지(= 상속 금지!)
+		 *   
+		 * >> 대표적인 final 클래스 : java.lang.String, java.lang.Math 등 
 		 */
 		
-		// 아무런 생성자도 정의하지않고, 생성자가 상속되지 않았으므로
-		// 컴파일러에 의해 기본 생성자가 자동으로 생성됨
-		SpiderMan s = new SpiderMan();
+		FinalVariable fv = new FinalVariable();
+		fv.num1 = 100;		// 일반 멤버변수는 값변경 가능
+//		fv.num2 = 200;		// final 키워드가 선언된 변수(상수)는 값 변경 불가능
+		// => The final field FinalVarable.b cancot be assigned
 		
-		// 생성자가 상속되지 않았으므로
-		// 파라미터 생성자는 SpiderMan클래스에 존재하지 않는다.
-//		SpiderMan s2 = new SpiderMan("피터 파커", 20);	// 오류 발생!!
 		
 	}
 
 }
 
-class Person {
-	// => Person 클래스는 별도의 상속이 표시되지 않았으므로
-	//    자동으로 Object 클래스를 상속받는다
-	// 모든 클래스의 최상위 클래스는 Object 클래스
-	String name;
-	int age;
-	
-	// 기본생성자 정의
-	public Person() {
-		// Object 클래스의 기본생성자 Object()가 자동으로 먼저 호출됨
-		System.out.println("생성자 Person() 호출됨!");
-	}
+// 1. 멤버변수에 final 키워드 사용 => 값 변경 불가 (상수 취급)
+class FinalVariable {
+	int num1 = 10;			// 일반 멤버변수(차후에 값 변경 가능)
+//	final int num2 = 20;	// 상수로 취급됨(차후에 값 변경 불가능)
+	final int NUM2 = 20;	// 상수로 취급됨(차후에 값 변경 불가능)
+	final String SCHOOL_NAME = "아이티윌";	// 단어 구분은 언더바(_) 사용
+}
 
-	// name, age를 파라미터로 갖는 파라미터 생성자 정의
-	public Person(String name, int age) {
-		this.name = name;
-		this.age = age;
+//-------------------------------------------------------------------------
+
+// 2. 메서드에 final 키워드 사용 => 오버라이딩 불가
+class FinalMethod {
+	
+	public void normalMethod() {
+		System.out.println("일반 메서드!");
+	}
+	
+	public final void finalMethod() {
+		System.out.println("final 메서드!");
 	}
 	
 }
 
-// Person 클래스를 상속받는 SpiderMan 클래스 정의
-class SpiderMan extends Person {
+class FinalMethodSubClass extends FinalMethod {
 	
-	public SpiderMan() {
-		// 서브클래스 생성자 호출 시 다른 코드를 실행하기 전
-		// 먼저 슈퍼클래스의 생성자가 자동으로 호출됨
-		// => Person 클래스의 기본생성자 Person() 먼저 호출됨 
-		System.out.println("생성자 SpiderMan() 호출됨!");
+	public void normalMethod() {
+		System.out.println("일반 메서드!");
+		finalMethod(); 	// final 메서드를 호출하는 것은 가능!
 	}
 	
-	public void fireWeb() {
-		System.out.println("거미줄 발사!!!");
-	}
+	// final 제한자가 사용된 메서드는 오버라이딩이 불가능!
+	// => Cannot override the final method from FinalMethod
+//	public final void finalMethod() {
+//		System.out.println("final 메서드!");
+//	}
 	
 }
+
+// -------------------------------------------------------------------------
+
+// 3. 클래스에 final 키워드 사용 => 상속 금지
+final class FinalClass {}
+
+// final 제한자가 붙은 클래스를 상속받는 경우
+//  => 상속 불가능한 클래스이므로 오류 발생!!
+//		The type FinalClassSubClass cannot subclass the final class FinalClass
+//class FinalClassSubClass extends FinalClass{}
+
+class HasAClass {
+	// final 클래스는 상속은 불가능 하지만, 인스턴스 생성을 통해 사용 가능
+	FinalClass fc = new FinalClass();	
+}
+
+
+
+
+
+
+
+
