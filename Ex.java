@@ -1,181 +1,93 @@
-import java.io.ObjectInputStream.GetField;
-
 public class Ex {
 
 	public static void main(String[] args) {
 		/*
-		 * super 키워드
-		 * - this와 마찬가지로 자동 생성되며, 특정 인스턴스 주소가 저장
-		 * 	 => this는 자신의 인스턴스를 가리키지만,
-		 * 		super는 자신의 부모(슈퍼클래스)의 인스턴스를 가리킴
+		 * 기본데이터타입 vs 참조데이터타입
+		 * - 두 종류의 데이터타입에 대한 값을 전달할 경우
+		 *   해당 값을 복사하여 전달
 		 * 
-		 * - this 사용법과 동일한 방법으로 사용하며
-		 *   슈퍼클래스에 접근하는 용도로 사용
-		 *   
-		 *  1. 레퍼런스 super
-		 *   - 슈퍼클래스의 인스턴스에 있는 멤버(변수, 메서드)에 접근하는 용도
-		 *   - 오버라이딩으로 인해 은닉된 슈퍼클래스의 변수 또는 메서드에
-		 *     접근하기 위한 용도로 사용
-		 *   - 기본 사용법 
-		 *     super.멤버변수 또는 super.메서드()
+		 * - 기본데이터타입은 실제 값의 복사가 일어나고,
+		 *   => 전달받은(복사된) 데이터(복사된 실제값)를 변경하더라도 
+		 *      원본데이터에는 아무런 영향이 없다!
+		 * 
+		 * - 참조데이터타입은 주소 값의 복사가 일어남
+		 *   => 전달받은 데이터(복사된 주소값)의 데이터(실제값)을 변경하면
+		 *      원본 데이터도 동일한 주소값을 참조하므로
+		 *      변경된 내용이 동일하게 적용되어있다
+		 *      (즉, 동일한 위치의 주소를 공유하므로 변경 사항 공유!)
 		 */
 		
-		Employee emp = new Employee("홍길동", 3000);
+		int money = 100000;
 		
-		System.out.println(emp.getEmployee());
+		System.out.println("변경 전 money = " +money);
 		
-		System.out.println("---------------------------------------");
+		// primitiveChange() 메서드 호출하여 int 형 변수 money 의 값 전달
+		primitiveChange(money);	// 실제 값(100000)을 복사하여 전달
 		
-		Manager mgr = new Manager("이순신", 4000, "개발1팀");
+		// 메서드에서 전달받은 실제값을 변경하더라도
+		// 원본 데이터는 아무런 영향을 받지 않는다!
+		System.out.println("변경 후 money = " +money);
 		
-		System.out.println(mgr.getEmployee());
+		System.out.println("============================================================");
 		
-		System.out.println("---------------------------------------");
+		MyMoney m = new MyMoney();
 		
-		Engineer eng = new Engineer();
+		System.out.println("변경 전 m.money = " +m.money);
+		// => 인스턴스변수이자 기본형 변수 money에 접근
 		
-		System.out.println(eng.getEmployee());
+		// primitiveChange() 메서드 호출하여 MyMoney 인스턴스의
+		// 인스턴수 변수인 기본데이터타입 money를 파라미터로 전달
+		primitiveChange(m.money);
+		// => 인스턴스변수이자 기본형 변수
+		// => MyMoney 인스턴스 m의 기본데이터타입 변수 money 전달
 		
-		System.out.println("---------------------------------------");
+		// 메서드에서 전달하는 변수가 인스턴스 내의 변수라 하더라도
+		// 기본 데이터타입일 경우 값을 복사하여 전달함
+		// 따라서, 실제 값을 복사하여 전달받은 메서드의 값을 변경하더라도
+		// 원본 데이터는 아무런 영향을 받지 않는다!
+		System.out.println("변경 전 m.money = " +m.money);
+		// => 인스턴스변수이자 기본형 변수 money에 접근
 		
-		eng.print("강감찬");
-		System.out.println("-------------------");
-		eng.print();
-	}
+		
+		System.out.println("============================================================");
+		
+		MyMoney m2 = new MyMoney();
 
-}
-/*
- * 직원(Employee) 클래스 정의
- * - 멤버변수 : 이름(name, String), 연봉(salary, int)
- * - 생성자
- *   1) 기본 생성자 - 아무 작업도 수행하지 않음
- *   2) 이름, 연봉 전달받아 초기화하는 생성자
- * - 메서드
- *   1) getEmployee() - 파라미터 없음, 리턴타입 String
- *      => 이름, 연봉을 문자열 결합 후 리턴
- */
-class Employee {
-	String name;
-	int salary;
+		System.out.println("변경 전 m2.money = " +m2.money);
+		
+		// referenceChange() 메서드를 호출하여
+		// MyMoney 인스턴스의 주소값(m2)을 파라미터로 전달
+		referenceChange(m2);	// 주소값을 복사하여 전달
+		
+		// 참조변수가 가진 주소값을 복사하여 메서드에 전달한 뒤
+		// 메서드 내에서 해당 참조변수에 접근하여 인스턴스 변수값을 변경하면
+		// 원본 데이터가 있는 곳의 값을 변경하게 되므로
+		// 원본 데이터도 영향을 받는다!
+		// => 즉, 원본 데이터와 전달받은 값이 가리키는 인스턴스가 동일하므로
+		//    한 곳에서 값을 변경하면 다른 곳에서도 동일한 값을 사용하게 됨
+
+		System.out.println("변경 후 m2.money = " +m2.money);
+		// => 메서드 내에서 변경된 값이 그대로 적용되어 출력됨
+		
+	}
+	public static void referenceChange(MyMoney m) {
+		// 외부로부터 전달받은 데이터(주소값)에 접근하여
+		// 해당 인스턴스 내의 멤버변수 값(실제값)을 변경
+		System.out.println("메서드 호출 후 변경 전 m.money = " +m.money);
+		m.money -= 9999;	// 전달 받은 주소값의 인스턴스 변수값 변경
+		System.out.println("메서드 호출 후 변경 전 m.money = " +m.money);
+	}
 	
-	public Employee() {
-		
-	}
 
-	public Employee(String name, int salary) {
-		super();
-		this.name = name;
-		this.salary = salary;
-	}
-	
-	public String getEmployee() {
-		String info = name + ", " +salary;
-		return info; 
-	}
-	
-}
-
-/* Manager 클래스 정의 : Employee 클래스를 상속
- * - 멤버변수 : 부서명(depart, 문자열)
- * - 생성자 : 이름, 연봉, 부서명을 전달받아 초기화하는 생성자
- * - 메서드 
- *   1) getEmploee() 메서드 오버라이딩
- *     => 이름, 연봉, 부서명을 문자열로 결합 후 리턴 
- */
-
-class Manager extends Employee {
-
-	String depart;
-
-
-//	public Manager(String name, int salary, String depart) {
-//		super(name, salary);
-//		this.depart = depart;
-//	}
-	
-	public Manager(String name, int salary, String depart) {
-		this.name = name;
-		this.salary = salary;
-		this.depart = depart;
-	}
-
-
-	@Override
-	public String getEmployee() {
-		// 이름, 연봉, 부서명을 문자열로 결합하여 리턴하도록 오버라이딩
-		// => 현재 Manager클래스 내에서 더 이상 슈퍼클래스인
-		//	  Employee 클래스의 getEmployee() 메서드는 보이지 않는다(은닉)
-//		String info = name + ", " + salary+ ", " + depart;
-//		return info;
-		
-		// 슈퍼클래스인 getEmployee() 메서드에서 이미
-		// 이름(name)과 연봉(salary)을 문자열로 결합하여 리턴하므로
-		// 슈퍼클래스의 getEmployee() 메서드를 호출한 뒤 
-		// 부서명(depart)만 별도로 결합해도 된다.
-		// => 이 때, 슈퍼클래스의 동일한 메서드를 호출하려면
-		// 	  super.메서드명()을 통해 은닉된 메서드 호출이 가능
-		
-		return super.getEmployee() + ", " + depart;
+	public static void primitiveChange(int money) {
+		// 외부로부터 전달받은 데이터(실제 값)을 변경		
+		System.out.println("메서드 호출 후 변경 전 money = " +money);
+		money -= 9999;
+		System.out.println("메서드 호출 후 변경 후 money = " +money);
 	}
 	
 }
 
-// Engneer 클래스 정의 - Employee 클래스 상속
-class Engineer extends Employee {
-	// 메서드와 마찬가지로 멤버변수도 슈퍼클래스와 동일한 변수 선언시
-	// 슈퍼클래스의 멤버변수는 은닉되어 보이지 않게됨
-	String name = "엔지니어이름";	// 슈퍼클래스와 동일한 멤버변수 선언
-	String skill;
-	
-	@Override
-	public String getEmployee() {
-		
-//		return super.getEmployee()+ ", " +skill;
-		
-		// 동일한 이름을 통해 부모의 변수가 은닉되면,
-		// 서브클래스에서 해당 변수 사용 시 서브클래스의 변수가 호출됨
-		
-//		return name + ", " + salary + ", " + skill;
-		
-		// 만약, 슈퍼클래스의 은닉된 멤버변수에 접근하려면
-		// super.변수명의 형태로 부모의 은닉된 변수에 접근 가능
-		return super.name + ", " + salary + ", " + skill;
-	}
-	
-	// 로컬변수, 멤버변수, 슈퍼클래스의 멤버변수를 각각 호출하는 방법
-	// 레퍼런스 this, 레퍼런스 super 사용에 따른 차이점
-	public void print(String name) {
-		// 로컬변수, 멤버변수, 슈퍼클래스의 멤버변수 이름이 모두 같을 때
-		System.out.println("name : " +name);				// 로컬변수
-		System.out.println("this.name : " +this.name);		// 자신의 인스턴스
-		System.out.println("super.name : " +super.name);	// 부모의 인스턴스
-	}
-		
-	public void print() {
-		// 로컬변수, 멤버변수, 슈퍼클래스의 멤버변수 이름이 모두 같을 때
-		// 메서드 내에서 변수명만 사용하거나 this.변수명을 사용 시
-		// 인스턴스 내의 멤버변수를 가리키게 됨
-		System.out.println("name : " +name);				// 로컬변수
-		System.out.println("this.name : " +this.name);		// 자신의 인스턴스
-		System.out.println("super.name : " +super.name);	// 부모의 인스턴스
-	}
-	
+class MyMoney {
+	int money = 100000;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
