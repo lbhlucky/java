@@ -1,115 +1,140 @@
 public class Test2 {
 
 	public static void main(String[] args) {
-		// 업캐스팅 연습
-		// 1. 서브클래스 타입 인스턴스 생성
-		SmartPhone 내폰 = new SmartPhone();
-		System.out.println("--------------서브클래스에서 접근 가능한 메서드---------");
-		System.out.println();
-		// 서브클래스 타입으로 접근 가능한 메서드 : 4개
-		내폰.kakaoTalk();	// 서브클래스에서 직접 정의한 메서드
-		내폰.youtube();	// 서브클래스에서 직접 정의한 메서드
-		내폰.call();		// 슈퍼클래스로부터 상속받은 메서드
-		내폰.sms();		// 슈퍼클래스로부터 상속받은 메서드
+		Employee emp = new Employee("1111", "홍길동", 4000);
+		emp.calcSalary(emp);
+		Manager man = new Manager("2222", "이순신", 5000, "영업팀");
+		emp.calcSalary(emp);
+		Engineer eng = new Engineer("3333", "강감찬", 3000, 3);
+		emp.calcSalary(emp);
 		
-		System.out.println();
-		System.out.println("--------------슈퍼클래스에서 접근 가능한 메서드---------");
-		System.out.println();
-		
-		// 2. 슈퍼클래스 타입 변수 선언 및 서브클래스의 인스턴스 전달
-		HandPhone 엄마폰 = 내폰;	// 서브클래스타입 -> 슈퍼클래스타입(업캐스팅)
-		// => 참조 변수 sp가 가진 데이터(주소값)를 전달
-		
-		// 슈퍼클래스 타입으로 접근 가능한 메서드 : 2개
-		엄마폰.call();		// 슈퍼클래스에서 직접 정의한 메서드
-		엄마폰.sms();		// 슈퍼클래스에서 직접 정의한 메서드
-		
-//		엄마폰.kakaoTalk();	// 호출 불가!!
-//		엄마폰.youtube();	// 호출 불가!!
-		// => 업캐스팅시 참조 가능한 영역의 축소가 일어나므로,
-		//	  슈퍼클래스 타입으로 접근 가능한 메서드 갯수가 줄어들게 됨
-		// ==> 즉, 슈퍼클래스 내의 멤버와 동일한 멤버에만 접근 가능하게 됨
-		
-		System.out.println();
-		System.out.println("-----------슈퍼클래스에서 접근 가능한 메서드------------");
-		System.out.println();
-		
-		// 또 다른 서브클래스 타입 인스턴스 생성
-		SmartPhone 동생폰 = new SmartPhone();
-		
-		엄마폰 = 동생폰; // 서브클래스 -> 슈퍼클래스(업캐스팅)
-		엄마폰.call();		// 슈퍼클래스에서 직접 정의한 메서드
-		엄마폰.sms();		// 슈퍼클래스에서 직접 정의한 메서드
-		
-		System.out.println();
-		System.out.println("==========다운캐스팅 연습(허용되지 않는 경우)===========");
-		System.out.println();
-		System.out.println("--------------슈퍼클래스에서 접근 가능한 메서드---------");
-		System.out.println();
-		// 다운캐스팅 연습(허용되지 않는 경우)
-		// 1. 슈퍼클래스의 인스턴스 생성
-		HandPhone 엄마폰2 = new HandPhone();
-		
-		// 슈퍼클래스 타입으로 접근 가능한 메서드 : 2개
-		엄마폰2.call();
-		엄마폰2.sms();
-		
-		// 2. 서브클래스 타입 변수에 슈퍼클래스 인스턴스 전달
-		// => 다운캐스팅 수행
-//		SmartPhone 내폰2 = (SmartPhone)엄마폰2;	// 다운캐스팅(오류 발생!!)
-		
-		System.out.println();
-		System.out.println("===============다운캐스팅 연습(허용되는 경우)===========");
-		System.out.println();
-		// 다운캐스팅 연습(허용되는 경우)
-		// 1. 서브클래스의 인스턴스 생성 및 업캐스팅 수행
-		HandPhone 엄마폰3 = new SmartPhone();
-		
-		System.out.println();
-		System.out.println("--------------슈퍼클래스에서 접근 가능한 메서드---------");
-		System.out.println();
-		
-		// 슈퍼클래스 타입으로 접근 가능한 메서드 : 2개
-		엄마폰3.call();
-		엄마폰3.sms();
-
-		System.out.println();
-		System.out.println("-----------서브클래스에서 접근 가능한 메서드------------");
-		System.out.println();
-		// 2. 서브클래스 타입으로 다운캐스팅
-		SmartPhone 내폰3 = (SmartPhone)엄마폰3;
-		
-		// 서브클래스 타입으로 접근 가능한 메서드 : 4개
-		내폰3.call();
-		내폰3.sms();
-		내폰3.kakaoTalk();
-		내폰3.youtube();
 		
 	}
 
 }
+// 사원(Employee) 클래스 정의
+class Employee {
+	String id;
+	String name;
+	int salary;
 
-class HandPhone {
-	String phoneNumber;
-	
-	public void call() {
-		System.out.println("HandPhone의 전화 기능!");
+	// 사원번호와 이름, 연봉을 전달받아 초기화하는 생성자 Employee() 정의
+	public Employee(String id, String name, int salary) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	// 사원 정보(사원번호, 이름)을 문자열로 결합하여 리턴하는 
+	// getEmplpyee() 메서드 정의
+
+	public String getEmployee() {
+		return id + ", " + name + ", " + salary;
 	}
 	
-	public void sms() {
-		System.out.println("HandPhone의 문자 기능!");
+	// 1. 메서드 오버라이딩을 통해 각 클래스에서 따로 연봉 계산
+	// 연봉을 꼐산하는 calcSalary() 메서드 정의
+//	public void calcSalary() {
+//		System.out.println("연봉 : " +salary);
+//	}
+	
+	// 2. 슈퍼클래스인 Employee 에서 모든 직원의 연봉을 다 계산할 경우
+	// => 메서드 하나로 Employee, Manager, Engineer 인스턴스를
+	//	  모두 전달받아야 하므로 업캐스팅 활용
+	public void calcSalary(Employee emp) {
+		// instanceof 연산자를 사용하여 Employee, Manager, Engineer 판별
+		if(emp instanceof Manager) {
+			// 매니저(Manager)의 연봉 계산
+			Manager m = (Manager)emp;
+			System.out.println("관리 부서 : " + m.depart + "에 따른 연봉 계산");
+			// ex) depart 가 "영업팀"일 경우 보너스 50% 향상 등 수행
+			System.out.println("매니저의 연봉 : " +salary);
+		} else if(emp instanceof Engineer) {
+			Engineer e = (Engineer)emp;
+			// 엔지니어(Engineer)의 연봉 계산
+			System.out.println("자격증 갯수 : " + e.certCount + "에 따른 연봉 계산");
+			// ex) certCount갯 수 * 10만원 보너스 추가
+			System.out.println("매니저의 연봉 : " +salary);
+		} else if(emp instanceof Employee) {
+			// 일반 사원(Employee)의 연봉 계산
+			System.out.println("연봉 : " +salary);
+			
+		}
+		
+		
 	}
+		
+}
+// 매니저(Manager)클래스 정의 - Employee 클래스 상속
+// 멤버변수 : 관리부서명(depart, 문자열)
+// 사원번호, 이름, 연봉, 관리부서명을 전달받아 초기화하는 생성자 Manager() 정의
+// 사원정보(사원번호, 이름, 연봉, 부서명)을 문자열로 결합하여 리턴하는
+// getEmployee() 메서드 오버라이딩
+class Manager extends Employee {
+	String depart;
+
+	public Manager(String id, String name, int salary, String depart) {
+		// => 슈퍼클래스 Employee 에 기본 생성자가 없으므로
+		//    파라미터 생성자를 명시적으로 호출하지 않으면 오류 발생!
+		super(id, name, salary);
+		this.depart = depart;
+	}
+
+	@Override
+	public String getEmployee() {
+		// 오버라이딩으로 인해 은닉된 슈퍼클래스의 메서드를 호출하려면
+		// 레퍼런스 super를 통해 접근(super.메서드명())
+		return super.getEmployee()+", "+depart;
+	}
+
+	// 1. 메서드 오버라이딩을 통해 각 클래스에서 따로 연봉 계산
+	// 연봉을 꼐산하는 calcSalary() 메서드 정의
+//	@Override
+//	public void calcSalary() {
+//		System.out.println("관리 부서 : " + depart + "에 따른 연봉 계산");
+//		// ex) depart 가 "영업팀"일 경우 보너스 50% 향상 등 수행
+//		System.out.println("매니저의 연봉 : " +salary);
+//		super.calcSalary();
+//	}
+//	
+		
 }
 
-// SmartPhone 클래스 정의 - HandPhone 클래스 상속
-class SmartPhone extends HandPhone {
-	String osName;
-	
-	public void kakaoTalk() {
-		System.out.println("스마트폰의 카카오톡 기능!");
+// 엔지니어(Engineer) 클래스 정의 - Emplpyee 클래스 상속
+class Engineer extends Employee {
+	int certCount;	// 자격증 갯수
+
+	public Engineer(String id, String name, int salary, int certCount) {
+		// => 슈퍼클래스 Employee 에 기본 생성자가 없으므로
+		//    파라미터 생성자를 명시적으로 호출하지 않으면 오류 발생!
+		super(id, name, salary);
+		this.certCount = certCount;
+	}
+
+	@Override
+	public String getEmployee() {
+		// 오버라이딩으로 인해 은닉된 슈퍼클래스의 메서드를 호출하려면
+		// 레퍼런스 super를 통해 접근(super.메서드명())
+		return super.getEmployee()+", "+certCount;
 	}
 	
-	public void youtube() {
-		System.out.println("스마트폰의 유튜브 기능!");
-	}
+	// 1. 메서드 오버라이딩을 통해 각 클래스에서 따로 연봉 계산
+	// 연봉을 꼐산하는 calcSalary() 메서드 정의
+//	@Override
+//	public void calcSalary() {
+//		System.out.println("자격증 갯수 : " + certCount + "에 따른 연봉 계산");
+//		// ex) certCount갯 수 * 10만원 보너스 추가
+//		System.out.println("매니저의 연봉 : " +salary);
+//		super.calcSalary();
+//	}
+		
 }
+
+
+
+
+
+
+
+
+

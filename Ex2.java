@@ -2,156 +2,154 @@ public class Ex2 {
 
 	public static void main(String[] args) {
 		/*
-		 * 형변환(Type Casting)
-		 * - 어떤 데이터타입을 다른 데이터타입으로 변환하는 것
-		 * - 기본 형변환(Primitive Type)과 참조 형변환(Reference Type)으로 구분됨
+		 * instanceof 연산자
+		 * - 어떤 객체가 특정 클래스 타입의 인스턴스인지를 판별하는 연산자
+		 *   => 형변환 가능 여부(is - a 관계)를 판별
+		 *   ex) a is a B => a instanceof B
+		 *   
+		 * - 판별 결과를 boolean 타입으로 리턴
+		 *   => boolean 타입 변수에 결과값을 저장하거나
+		 *      if문 등의 조건식에 직접 사용하여 판별
+		 *      
+		 * - 판별 결과가 true이면 형변환이 가능한 관계라는 의미
+		 *   업캐스팅 또는 다운캐스팅 가능한 관계 모두 true가 리턴됨
 		 * 
-		 *  1. 기본 형변환
-		 *    - 기본 데이터타입 8가지중 boolean을 제외한
-		 *      나머지 7가지 타입끼리의 형변환
-		 *      => 작은 타입에서 큰 타입으로 변환 시 자동 형변환
-		 *         큰 타입에서 작은 타입으로 변환 시 강제 형변환
-		 *      => 강제 형 변환 시 반드시 형 변환 연사자를 사용하여
-		 *         변환될 타입을 명시해야한다!
-		 *      => 단, 강제 형 변환 후에는 오버플로우가 발생할 수 있음!
-		 *     
-		 *  2. 참조 형변환(레퍼런스 형변환)
-		 *    - 클래스 간의 형변환(참조형 변수끼리의 형변환)
-		 *    - 반드시 상속관계에서만 가능한 변환!!!
-		 *    - 자식(서브클래스) 타입에서 부모(슈퍼클래스)타입으로 변환 시 
-		 *		"자동 형변환(업캐스팅)"이라고 하며
-	     *      부모(슈퍼클래스) 타입에서 자식(서브클래스)타입으로 변환 시 
-		 *		"강제 형변환(다운캐스팅)"이라고 한다.
-		 *	  
-		 *	  1) 업캐스팅(Up Casting)
-		 *		- 슈퍼클래스 타입으로 서브클래스이 인스턴를 참조하는 것
-		 *		  => 서브클래스 인스턴스를 슈퍼클래스 타입으로 변환하는 것
-		 *
-		 *		  < 기본 문법 >
-		 *			슈퍼클래스타입 변수명 = 서브클래스인스턴스;
-		 *
-		 *		- 묵시적(자동) 형변환이 일어남
-		 *		- 참조 가능한 영역이 축소된다(ex. 스마트폰을 부모님께 줘도 새로운 기능 못씀)
-		 *		  (슈퍼클래스 타입에서 선언된 변수, 메서드만 접근 가능)
-		 *		- 하나의 슈퍼클래스 타입으로 여러 서브클래스 인스턴스의 
-		 *		  공통된 멤버에 접근 가능하도록 해준다!
-		 *		- 일반적인 레퍼런스 형변환을 의미!
-		 *
-		 */
-
-		// Child 클래스의 인스턴스(c) 생성
-		Child c = new Child();	// 서브클래스의 인스턴스 생성
-		
-		// 서브클래스의 인스턴스 c를 통해 접근 가능하 메서드 : 2개
-		c.parentPrn();	// 슈퍼클래스에서 상속받은 메서드
-		c.childPrn();	// 서브클래스에서 정의 메서드
-		
-		// Parent 타입 변수 p를 선언하여 Child 클래스의 인스턴스 전달
-		Parent p;	// 슈퍼클래스 타입 참조 변수 p 선언
-		p = c;	// 서브클래의 인스턴스 주소를 슈퍼클래스타입 변수에 전달
-		// => Child 타입 => Parent 타입으로 변환됨 (업캐스팅)
-		// ==> 업캐스팅은 자동형변환(묵시적형변환)이 가능하므로 형변환 연산자 생략 가능!
-		
-		// Parent 타입 변수 p를 통해 접근 가능한 메서드 : 1개
-		p.parentPrn();	// 상속받은 메서드는 호출 가능
-//		p.childPrn();	// 오류 발생!! , 서브클래스에서 정의한 메서드는 호출 불가능!!
-//		=> 업캐스팅 후에는 참조 영역에 대한 축소 발생하므로
-//		   상속된 멤버 외의 서브클래스에서 정의한 멤버는 접근이 불가능하다!
-//		   즉, 서브클래스의 멤버는 보이지 않게 됨
-		
-		System.out.println("p와 c의 주소값이 같은가? " + (p == c));
-		
-		System.out.println("==================================================================");
-		
-		/*
-		 * 다운캐스팅(Down Casting)
-		 *	- 서브클래스 타입으로 슈퍼클래스의 인스턴스를  참조하는 것
-		 *	  => 슈퍼클래스 이스턴스를 서브클래스 타입으로 변환하는것
-		 *	- 참조 가능한 영역이 확대됨
-		 *	  (서브클래스 타입에서 선언된 변수, 메서드에 모두 접근 가능함)
-		 *	  => 단, 실제 존재하지 않는 영역에 대한 접근 위험성이 발생함!
-		 *	- 묵시적(자동) 형변환이 일어나지 않음
-		 *	  => 반드시 형변환 연산자를 사용한 명시적(강제)형변환 필수!
-		 *	- 명시적으로 형변환 후에도 실생 시점에서 오류 발생할 수 있음
-		 *	  => 따라서, 일반적인 상황에서의 다운캐스팅은 허용되지 않음!
-		 *	  => 이전에 이미 업캐스팅 된 인스턴스를
-		 *	  	 다시 다운캐스팅하는  경우에만 안전하게 변환이 일어남!
-		 *
-		 *	   < 기본 문법 >
-		 *		서브클래스타입 변수명 = (서브클래스타입)슈퍼클래스인스턴스
+		 *  < 기본 문법 >
+		 * 	a instanceof B
+		 * => a : 객체(참조변수)
+		 *    B : 클래스명(또는 인터페이스명)
 		 */
 		
-		// 슈퍼클래스타입 인스턴스 (p2) 생성
-		Parent p2 = new Parent();
-		// 슈퍼클래스타입으로 접근 가능한 메서스 : 1개
-		p2.parentPrn();		// 슈퍼클래스에서 직접 정의한 메서드
+		Parent2 p = new Parent2();
+
+		// if 문을 사용하여 Parent2 객체가 Child2 타입으로 변환 가능 여부 판별
+		// => p2 is a Child2
+		if (p instanceof Child2) { // 우항에 변수를 넣으면 오류남! 반드시 타입을 넣어야함
+			// 판별 결과가 true 이면 무조건 Child2 타입으로 변환 가능
+			System.out.println("p -> Child2 타입으로 형변환 가능");
+		} else {
+			// 판별 결과가 false이면 어떠한 변환도 불가능!!
+			// => 슈퍼클래스 타입 인스턴스이므로 다운캐스팅 불가!!
+			System.out.println("p -> Child2 타입으로 형변환 불가능");
+		}
+
+		System.out.println("--------------------------------------------------------");
+
+		Parent2 p2 = new Child2();
+
+		if (p2 instanceof Child2) { // 우항에 변수를 넣으면 오류남! 반드시 타입을 넣어야함
+			// 판별 결과가 true 이면 무조건 Child2 타입으로 변환 가능
+			// => 서브클래스를 이미 업캐스팅 해 놓은 상태이므로
+			// 형변환 가능하다는 true가 리턴됨!
+			System.out.println("p -> Child2 타입으로 형변환 가능");
+//			Child2 c = p2;	// 자동형변환은 불가능한 관계이므로
+			Child2 c = (Child2) p2; // 강제형변환
+		} else {
+			System.out.println("p -> Child2 타입으로 형변환 불가능");
+		}
+
+		System.out.println("========================================================");
+
+		// SmartPhone 인스턴스(sp) 생성
+		SmartPhone 내폰 = new SmartPhone();
 		
-		// 서브클래스 타입 변수 선언 및 슈퍼클래스 타입 인스턴스 전달
-//		Child c2 = p2;	// 오류 발생!, 다운캐스팅은 자동 형변환이 지원되지 않음 
-//		Type mismatch: cannot convert from Parent to Child
-//		=> 명시적(강제) 형변환 필요 = 형변환 연산자 사용
+		// 내폰은 스마트폰 입니까?
+		if(내폰 instanceof SmartPhone) {
+			System.out.println("내폰은 SmartPhone 맞음!!!");
+			// 그러므로 SmartPhone 타입 변수에 저장가능
+			SmartPhone 동생폰 = 내폰;
+			동생폰.call();
+			동생폰.sms();
+			동생폰.kakaoTalk();
+			동생폰.youtube();
+		} else {
+			System.out.println("내폰은 SmartPhone 아님!!!");
+		}
 		
-//		Child c2 = (Child)p2;
-		// => 형변환 후에도 논리적 오류 발생(Parent cannot be cast to Child)
+		System.out.println("--------------------------------------------------------");
 		
-		// 다운 캐스팅을 하게 되면 참조 영역에 대한 확대가 일어남
-//		c2.parentPrn();		// Parent 인스턴스에 존재하는 메서드
-//		c2.childPrn();		// Parent 인스턴스에 존재하지않는 메서드
-		// => ChildPrn()메서드는 실제 인스턴스에는 존재하지 않지만
-		//	  Child타입 클래스가 알고 있는 메서드이므로 접근 가능하게 됨
-		//	  그러나, 실제 존재하지 않는 메서드를 접근하게 되므로 오류!
-		// => 존재하지 않는 영역에 대한 참조의 위험때문에
-		//	  다운캐스팅은 자동 형변환이 지원되지 않으며
-		//	  강제 형변황을 하더라도 실행 시점에서 논리적 오류가 발생함!
+		// 내폰은 핸드폰 입니까?
+		if(내폰 instanceof HandPhone) {
+			System.out.println("내폰은 HandPhone 맞음!!!");
+			System.out.println("그러므로 HandPhone으로 형변환 가능함!!");
+			HandPhone 엄마폰 = 내폰;
+			System.out.println("내폰은 HandPhone의 모든 기능을 포함한다!");
+			엄마폰.call();
+			엄마폰.sms();
+		} else {
+			System.out.println("내폰은 HandPhone 아님!!!");
+		}
 		
-		System.out.println("======================================================");
+		System.out.println("--------------------------------------------------------");
+
+		HandPhone 엄마폰 = new HandPhone();
 		
-//		Child c3 = new Child();	// 서브클래스의 인스턴스 생성
-//		Parent p3 = c3;	// 업캐스팅
-				
-		// 위의 두 문장을 하나로 결합 가능
-		Parent p3 = new Child();
-		// 슈퍼클래스(Parent) 타입으로 접근 가능한 메서드 : 1개
-		p3.parentPrn();// 상속받은 메서드
+		// 엄마폰은 SmartPhone 입니까?
+		if(엄마폰 instanceof SmartPhone) {
+			System.out.println("엄마폰은  SmartPhone 맞음!!!");
+		} else {
+			System.out.println("엄마폰은  SmartPhone 아님!!!");
+			System.out.println("그러므로 SmartPhone로 형변환 불가능!");
+//			SmartPhone 내폰2 = 엄마폰;
+//			SmartPhone 내폰2 = (SmartPhone)엄마폰;	// 실행시 오류 발생!!
+			System.out.println("엄마폰은 SmartPhone의 모든 기능을 포함하지 못함!!");
+		}
 		
-		// 이미 업캐스팅 된 인스턴스를 다시 다운캐스팅
-//		Child c3 = p3;	// 명시적 형변환 필요!
-		Child c3 = (Child) p3;	// 다운캐스팅(실행 시 오류 발생 하지 않음!)
+		System.out.println("--------------------------------------------------------");
+
+		HandPhone 엄마폰2 = new SmartPhone();	// 업캐스팅
 		
-		// 서브클래스(Child) 타입으로 접근 가능한 메서드 : 2개
-		c3.parentPrn();		// 상속받은 메서드
-		c3.childPrn();		// 서브클래스에서 직접 정의한 메서드
-		
-		// 결론!!!
-		// 이전에 이미 업캐스팅 되어 참조영역이 축소되었던 인스턴스를
-		// 다시 다운캐스팅을 통해 참조영역이 확대되면
-		// 접근 범위에 아무런 문제가 없으므로 사용이 가능하다
-		// 따라서, 레퍼런스 형변환 시에는 상속 관계를 고려하여
-		// 알맞은 형변환 방식을 선택해서 변환해야 한다!
+		// 엄마폰은 스마트폰입니까?
+		if(엄마폰2 instanceof SmartPhone) {
+			System.out.println("엄마폰은  SmartPhone 맞음!!!");
+			System.out.println("그러므로 SmartPhone으로 형변환 가능");
+//			SmartPhone 내폰2 = 엄마폰2;	// 강제형변환 필요!!
+			SmartPhone 내폰2 = (SmartPhone)엄마폰2;
+			System.out.println("엄마폰은 SmartPhone의 모든 기능을 포함함!!");
+			System.out.println("따라서, SmartPhone으로 형변환 후에도");
+			System.out.println("정상적으로 SmartPhone의 모든 기능 사용 가능");
+			내폰2.call();
+			내폰2.sms();
+			내폰2.kakaoTalk();
+			내폰2.youtube();
+		} else {
+			System.out.println("엄마폰은  SmartPhone 아님!!!");
+		}
 		
 		
 	}
-	
+
 }
 
-class Parent {
-	
-	public void parentPrn() {
-		
-		System.out.println("슈퍼클래스의 parentPrn() 메서드!");
-		
-	}
-	
+class Parent2 {
 }
 
-// Child 클래스 정의 - parent 클래스 상속
-// childPrn() 메서드 정의 "서브클래스의 childPrn() 메서드" 출력
-class Child extends Parent {
-	
-	public void childPrn() {
-		
-		System.out.println("서브클래스의 childPrn() 메서드!");
-		
+class Child2 extends Parent2 {
+}
+
+//---------------------------------------------------------------------------------------
+
+class HandPhone {
+	String phoneNumber;
+
+	public void call() {
+		System.out.println("HandPhone의 전화 기능!");
 	}
+
+	public void sms() {
+		System.out.println("HandPhone의 문자 기능!");
+	}
+}
+
+// SmartPhone 클래스 정의 - HandPhone 클래스 상속
+class SmartPhone extends HandPhone {
+	String osName;
 	
+	public void kakaoTalk() {
+		System.out.println("스마트폰의 카카오톡 기능!");
+	}
+
+	public void youtube() {
+		System.out.println("스마트폰의 유튜브 기능!");
+	}
 }
