@@ -2,174 +2,121 @@ public class Ex {
 
 	public static void main(String[] args) {
 		/*
-		  * 다형성(Polymorphism)
-		 * - 하나의 클래스 타입으로 여러 인스턴스를 참조하는 것
-		 * - 업캐스팅을 의미함
-		 *   => 서브클래스에서 메서드 오버라이딩을 수행했을 때
-		 *      슈퍼클래스 타입으로 업캐스팅 후 메서드 호출 시
-		 *      오버라이딩 된 메서드가 호출되어
-		 *      코드는 동일하나 실행 결과가 달라지게 됨
+		 * 추상클래스와 추상메서드
+		 * 1. 추상메서드
+		 * 	  - 메서드 구현부(바디(body), {})가 없는 메서드
+		 *      = 실행할 코드가 없는 메서드
 		 *      
-		 * - 다형성을 통해 코드의 통일성을 향상시킬 수 있으나
-		 *   해당 인스턴스의 상세 속성에 접근하려면
-		 *   다운캐스팅을 통해 서브클래스 타입으로 변환해야 접근이 가능함!
+		 *    - 구현부가 없기 때문에 외부에서 호출해도 실행할 코드가 없음
+		 *      => 따라서,추상 메서드를 포함하는 메서드는
+		 *         반드시 추상클래스로 선언해야한다!!
+		 *         
+		 *	  - 추상 메서드 정의 시 리턴타입 앞에 abstract 키워드를 붙임
+		 *	
+		 *	< 추상메서드 정의 기본 문법 >
+		 *	 [접근제한자] abstract 리턴타입 메서드명([매개변수...]);
+		 *         
+		 * 2. 추상클래스
+		 * 	  - 인스턴스 생성이 불가능한 클래스(new 불가!)
+		 * 		=> 인스턴스 생성이 가능할 경우 추상메서드 호출이 가능하므로
+		 * 		   인스턴스 생성을 못하도록 막아놓은 클래스
 		 * 
-		  * 업캐스팅시 오버라이딩
-		 * - 동적 바인딩 : 코드상의 실행할 메서드와 컴파일 후
-		 *   실행 시점에서 실행되는 메서드가 달라지는 것
-		 *
-		 * - 서브클래스에서 오버라이딩 된 메서드가 존재할 경우
-		 *   업캐스팅 후에도 오버라이딩 된 메서드가 호출됨
-		 *   => 즉, 메소드 호출시 참조 타입이 누구인지 중요하지 않고
-		 *      실제 인스턴스가 누구인지가 중요하다!
+		 * 	  - 상속을 통해 서브클래스에서 추상 메서드를 구현하도록
+		 *   	강제하는 용도의 클래스로 주로 사용!
+		 *   
+		 *    - 추상클래스가 가질 수 있는 멤버
+		 *      => 생성자, 일반 멤버변수, 상수, 일반 메서드, "추상 메서드"
+		 *    
+		 *    - 클래스 정의시 class 키워드 앞에 abstract 키워드를 붙임
+		 *    
+		 *    - 인스턴스 생성은 불가능하지만 참조변수 타입으로는 사용 가능
+		 *    
+		 *	< 추상클래스 정의 기본 문법 >
+		 *	 abstact class 클래스명 {}
 		 */
-		// Truck 인스턴스 생성 및 접근 가능한 멤버 호출
-		System.out.println("-----------------Truck의 접근 가능한 메소드");
-
-		Truck truck = new Truck();
 		
-		// Truck 클래스에서 정의한 메서드
-		truck.dump();	
+//		Shape s = new Shape();		//오류 발생!!
+		// Cannot instantiate the type Ex.Shape
+		// => 인스턴스화가 불가능한 타입이므로 인스턴스 생성시 오류 발생
 		
-		// Car클래스로부터 상속받은 메서드
-		truck.speedUp();
-		truck.speedDown();
+		Shape s= new Circle();
+		s.draw();
 		
-		// Taxi 인스턴스 생성 및 접근 가능한 멤버 호출
-		System.out.println("-----------------Taxi의 접근 가능한 메소드");
-		
-		Taxi taxi = new Taxi();
-
-		// Taxi 클래스에서 정의한 메서드
-		taxi.lift();
-		taxi.drop();
-
-		// Car클래스로부터 상속받은 메서드
-		taxi.speedUp();
-		taxi.speedDown();
-		
-		System.out.println();
-		System.out.println("===========================================");
-		System.out.println("---------------------Truck -> Car 업캐스팅");
-		// Taxi -> Car 업캐스팅 및 접근 가능하 메서드 호출
-		Car car = truck;
-		
-		// Truck 클래스에서 speedUp(),speedDown() 메서드를 오버라이딩
-		// => 따라서, 업캐스팅 후에도 오버라이딩된 Truck의 메서드 호출됨
-		car.speedUp();		// 서브클래스에서 오버라이딩된 메서드 호출
-		car.speedDown();	// 서브클래스에서 오버라이딩된 메서드 호출
-//		car.drmp();		// 참조 영역 축소로 상속 멤버 외에 접근 불가
-
-		System.out.println("---------------------Car -> Truck 다운캐스팅");
-		// Car -> Truck 다운캐스팅 및 접근 가능하 메서드 호출
-//		truck = car;	// 다운캐스팅 시 명시적 형변환 필요
-		truck = (Truck)car;	// 다운캐스팅
-		
-		// Truck 클래스에서 정의한 메서드
-		truck.dump();
-		
-		// Car클래스로부터 상속받은 메서드
-		truck.speedUp();
-		truck.speedDown();
-		
-		
-		System.out.println("---------------------Taxi -> Car 업캐스팅");
-		// Taxi -> Car 업캐스팅 및 접근 가능하 메서드 호출
-		car = taxi;
-		
-		// Taxi 클래스에서 speedUp(),speedDown() 메서드를 오버라이딩
-		// => 따라서, 업캐스팅 후에도 오버라이딩된 Taxi의 메서드 호출됨
-		car.speedUp();		// 서브클래스에서 오버라이딩된 메서드 호출
-		car.speedDown();	// 서브클래스에서 오버라이딩된 메서드 호출
-
-//		참조 영역 축소로 상속 멤버 외에 접근 불가
-//		car2.lift();
-//		car2.drop();
-		
-		System.out.println("---------------------Car -> Taxi 다운캐스팅");
-		//Car -> Taxi 다운캐스팅 및 접근 가능하 메서드 호출
-//		taxi = car;	// 다운캐스팅 시 명시적 형변환 필요
-		taxi = (Taxi)car;
-		
-		// Taxi 클래스에서 정의한 메서드
-		taxi.lift();
-		taxi.drop();
-		
-		// Car클래스로부터 상속받은 메서드
-		taxi.speedUp();
-		taxi.speedDown();
-
-		
-		
-		
-	}
-
-}
-
-/*
- * Car 클래스 정의
- * - 메서드 정의
- *   1) speedUp() : 파라미터 없음, 리턴값 없음
- *      => "Car의 속력 증가!" 출력
- *   2) sppeDown() : 파라미터 없음, 리턴값 없음
- *      => "Car의 속력 감소!" 출력
- *      
- * Truck 클래스 정의 - Car 클래스 상속
- * - 메서드 정의 : 파라미터 없음, 리턴값 없음
- *   1) dump() : "Truck의 짐 싣기"
- *   
- * Taxi 클래스 정의 - Car 클래스 상속
- * - 메서드 정의 : 파라미터 없음, 리턴값 없음
- *   1) lift() : "Taxi의 승객 승차!"출력
- *   2) drop() : "Taxi의 승객 하차!"출력
- * 
- */
-
-class Car {
-	
-	public void speedUp() {
-		System.out.println("Car의 속력 증가!");
-	}
-	
-	public void speedDown() {
-		System.out.println("Car의 속력 감소!");
+		s = new Rectangle();
+		s.draw();
 	}
 }
 
-class Truck extends Car {
+//========================================================================================
+// 추상클래스와 추상메서드를 사용하여 강제성을 부여하는 방법
+// 1. 추상메서드 draw()를 갖는 추상클래스 Shape 정의
+abstract class Shape {
+//	public abstract void draw();	// 추상메서드는 바디를 가질 수 없다!
+	public abstract void draw();
+	}
+
+//	2. 추상클래스 Shape 을 상속받는 서브클래스 Circle 정의
+//  => 추상메서드가 존재하는 경우 서브클래스에서  반드시
+//	   추상메서드를 구현(implements)해야한다!
+//	  구현(implements)와 오버라이딩(Overriding)은 동일한 기능이지만
+//    메서드 바디{}를 구현하는데 목적이 있기 때문에 다른 용어로 표현함
+class Circle extends Shape{
+	// draw() 메서드를 상속받아 구현해야함 => overriding(implements) 필수!!!
+	@Override
+	public void draw() {
+		System.out.println("추상클래스로부터 상속받은 추상메서드 오버라이딩!");
+		System.out.println("원 그리기!");
+	}
 	
-	@Override
-	public void speedUp() {
-		System.out.println("Truck의 속력 증가!");
-	}
-
-	@Override
-	public void speedDown() {
-		System.out.println("Truck의 속력 감소!");
-	}
-
-	public void dump() {
-		System.out.println("Truck의 짐 싣기!");
-	}
 }
 
-class Taxi extends Car {
-	
-	@Override
-	public void speedUp() {
-		System.out.println("Taxi의 속력 증가!");
-	}
+//	3. Shape 클래스를 상속받는 Rectangle 클래스 정의
+class Rectangle extends Shape {
+	// 추상메서드 오버라이딩이 강제성으로 부여되므로
+	// 개발자가 실수로 빠뜨릴 위험이 없어짐!
 
 	@Override
-	public void speedDown() {
-		System.out.println("Taxi의 속력 감소!");
-	}
-
-	public void lift() {
-		System.out.println("Taxi의 승객 승차!");
+	public void draw() {
+		System.out.println("추상클래스로부터 상속받은 추상메서드 오버라이딩!");
+		System.out.println("사각형 그리기!");
 	}
 	
-	public void drop() {
-		System.out.println("Taxi의 승객 하차!");
-	}
 }
+	
+
+
+
+
+//========================================================================================
+
+
+
+//========================================================================================
+// 강제성을 부여하지 않고 클래스를 정의하게 될 경우 발생하는 문제점
+//========================================================================================
+//class Shape {
+//	public void draw() {
+//		System.out.println("도형 그리기!!");
+//	}
+//}
+//
+//// 원(Circle)클래스 정의 - Shape 상속
+//class Circle extends Shape {
+//	/*
+//	 * Shape 클래스르 상속받는 Circle 클래스는 draw() 메서드를 갖게 되지만
+//	 * draw() 메서드를 오버라이딩 하지 않고 다른 메서드를 정의하여
+//	 * 원을 그려도 부모(Shape)입장에서는 강제할 방법이 없다!
+//	 */
+//	public void circleDraw() {
+//		System.out.println("원그리기!");
+//	}
+//}
+//
+//// 사각형(Rectangle) 클래스 정의 - Shape 상속
+//class Rectangle extends Shape {
+//	/*
+//	 * Shape 클래스르 상속받는 Rectangle 클래스도 draw() 메서드를 갖게 되지만
+//	 * 실수로 인해 draw() 메서드를 오버라이딩 하지 않더라도
+//	 * 부모(Shape)입장에서는 강제할 방법이 없다!
+//	 */
+//}
