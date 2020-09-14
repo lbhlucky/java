@@ -2,154 +2,95 @@ public class Ex2 {
 
 	public static void main(String[] args) {
 		/*
-		 * instanceof 연산자
-		 * - 어떤 객체가 특정 클래스 타입의 인스턴스인지를 판별하는 연산자
-		 *   => 형변환 가능 여부(is - a 관계)를 판별
-		 *   ex) a is a B => a instanceof B
-		 *   
-		 * - 판별 결과를 boolean 타입으로 리턴
-		 *   => boolean 타입 변수에 결과값을 저장하거나
-		 *      if문 등의 조건식에 직접 사용하여 판별
-		 *      
-		 * - 판별 결과가 true이면 형변환이 가능한 관계라는 의미
-		 *   업캐스팅 또는 다운캐스팅 가능한 관계 모두 true가 리턴됨
+		 * 정적(Static)멤버 = 클래스 멤버
+		 * - 메모리(메서드 영역)에 로딩될 때 함께 로딩되는 멤버
+		 * - 인스턴스 생성과 상관없음
+		 *   => 인스턴스 생성없이 클래스명만으로 접근 가능
+		 *   	(클래스명.정적멤버변수명 또는 클래스명.정적메서드명())
+		 * - 정적 멤버변수의 경우 모든 인스턴스에서 하나의 값을 공유함
+		 *   => 공유 메모리 공간을 사용하므로 모든 인스턴스가 주소값 공유
 		 * 
-		 *  < 기본 문법 >
-		 * 	a instanceof B
-		 * => a : 객체(참조변수)
-		 *    B : 클래스명(또는 인터페이스명)
+		 * - 로컬변수는 메서드 호출 및 종료와 관계있고,
+		 *   인스턴스 변수는 인스턴스 생성 및 소멸과 관계있고,
+		 *   클래스변수는 클래스 로딩(프로그램시작) 및 
+		 *   클래스 제거(프로그램종료)와 관계있다.
 		 */
 		
-		Parent2 p = new Parent2();
-
-		// if 문을 사용하여 Parent2 객체가 Child2 타입으로 변환 가능 여부 판별
-		// => p2 is a Child2
-		if (p instanceof Child2) { // 우항에 변수를 넣으면 오류남! 반드시 타입을 넣어야함
-			// 판별 결과가 true 이면 무조건 Child2 타입으로 변환 가능
-			System.out.println("p -> Child2 타입으로 형변환 가능");
-		} else {
-			// 판별 결과가 false이면 어떠한 변환도 불가능!!
-			// => 슈퍼클래스 타입 인스턴스이므로 다운캐스팅 불가!!
-			System.out.println("p -> Child2 타입으로 형변환 불가능");
-		}
-
-		System.out.println("--------------------------------------------------------");
-
-		Parent2 p2 = new Child2();
-
-		if (p2 instanceof Child2) { // 우항에 변수를 넣으면 오류남! 반드시 타입을 넣어야함
-			// 판별 결과가 true 이면 무조건 Child2 타입으로 변환 가능
-			// => 서브클래스를 이미 업캐스팅 해 놓은 상태이므로
-			// 형변환 가능하다는 true가 리턴됨!
-			System.out.println("p -> Child2 타입으로 형변환 가능");
-//			Child2 c = p2;	// 자동형변환은 불가능한 관계이므로
-			Child2 c = (Child2) p2; // 강제형변환
-		} else {
-			System.out.println("p -> Child2 타입으로 형변환 불가능");
-		}
-
-		System.out.println("========================================================");
-
-		// SmartPhone 인스턴스(sp) 생성
-		SmartPhone 내폰 = new SmartPhone();
+		// StaticEx 클래스의 클래스(정적)변수 a는
+		// 클래스가 메모리에 로딩될 때 함께 로딩되므로
+		// 인스턴스 생성전에 메모리에 로딩되며, 인스턴스 생성 없이도
+		// 클래스명만으로 생성가능한 멤버이다!
+		System.out.println("StaticEx.a  : " +StaticEx.a);	// 접근 가능
+//		System.out.println("StaticEx.b  : " +StaticEx.b);	// 오류 발생!
+//		Cannot make a static reference to the non-static field StaticEx.b
+//		=> 인스턴스 멤버변수 b는 반드시 인스턴스를 통해서만 접근가능
 		
-		// 내폰은 스마트폰 입니까?
-		if(내폰 instanceof SmartPhone) {
-			System.out.println("내폰은 SmartPhone 맞음!!!");
-			// 그러므로 SmartPhone 타입 변수에 저장가능
-			SmartPhone 동생폰 = 내폰;
-			동생폰.call();
-			동생폰.sms();
-			동생폰.kakaoTalk();
-			동생폰.youtube();
-		} else {
-			System.out.println("내폰은 SmartPhone 아님!!!");
-		}
+		// StaticEx클래스의 인스턴스 생성
+		StaticEx se = new StaticEx();
+		// => 인스턴스 생성시 Heap영역에 인스턴스 멤버도 함께 로딩됨
+		System.out.println("se.a : "+se.a);
+		// => 정적멤버변수도 일반 인스턴스 멤버변수처럼 접근할 수 있으나
+		//    가급적 static 접근 방식(클래스명.변수명)으로 접근하도록 하자!
+		System.out.println("se.b : "+se.b);	// 반드시 인스턴스를 통해 접근!!
 		
-		System.out.println("--------------------------------------------------------");
+		// 변수 a의 값 = 100 으로 변경, 변수 b의 값을 200으로 변경후 출력
+		StaticEx.a = 100;
+		se.b = 200;
 		
-		// 내폰은 핸드폰 입니까?
-		if(내폰 instanceof HandPhone) {
-			System.out.println("내폰은 HandPhone 맞음!!!");
-			System.out.println("그러므로 HandPhone으로 형변환 가능함!!");
-			HandPhone 엄마폰 = 내폰;
-			System.out.println("내폰은 HandPhone의 모든 기능을 포함한다!");
-			엄마폰.call();
-			엄마폰.sms();
-		} else {
-			System.out.println("내폰은 HandPhone 아님!!!");
-		}
+		System.out.println("변경 후 StaticEx.a : " +StaticEx.a);
+		System.out.println("변경 후 se.a : "+se.a);
+		System.out.println("변경 후 se.b : " +se.b);
 		
-		System.out.println("--------------------------------------------------------");
-
-		HandPhone 엄마폰 = new HandPhone();
 		
-		// 엄마폰은 SmartPhone 입니까?
-		if(엄마폰 instanceof SmartPhone) {
-			System.out.println("엄마폰은  SmartPhone 맞음!!!");
-		} else {
-			System.out.println("엄마폰은  SmartPhone 아님!!!");
-			System.out.println("그러므로 SmartPhone로 형변환 불가능!");
-//			SmartPhone 내폰2 = 엄마폰;
-//			SmartPhone 내폰2 = (SmartPhone)엄마폰;	// 실행시 오류 발생!!
-			System.out.println("엄마폰은 SmartPhone의 모든 기능을 포함하지 못함!!");
-		}
+		System.out.println("==============================================================================");
 		
-		System.out.println("--------------------------------------------------------");
-
-		HandPhone 엄마폰2 = new SmartPhone();	// 업캐스팅
+		StaticEx se2 = new StaticEx();
+		// 인스턴스를 새로 생성하더라도 정적 멤버변수는
+		// 하나의 메모리 공간을 모든 인스턴스에서 공유하므로
+		// 하나의 인스턴스에서 값을 변경하면 모든 인스턴스가 변경된 값을 공유
 		
-		// 엄마폰은 스마트폰입니까?
-		if(엄마폰2 instanceof SmartPhone) {
-			System.out.println("엄마폰은  SmartPhone 맞음!!!");
-			System.out.println("그러므로 SmartPhone으로 형변환 가능");
-//			SmartPhone 내폰2 = 엄마폰2;	// 강제형변환 필요!!
-			SmartPhone 내폰2 = (SmartPhone)엄마폰2;
-			System.out.println("엄마폰은 SmartPhone의 모든 기능을 포함함!!");
-			System.out.println("따라서, SmartPhone으로 형변환 후에도");
-			System.out.println("정상적으로 SmartPhone의 모든 기능 사용 가능");
-			내폰2.call();
-			내폰2.sms();
-			내폰2.kakaoTalk();
-			내폰2.youtube();
-		} else {
-			System.out.println("엄마폰은  SmartPhone 아님!!!");
-		}
+		System.out.println("se2.a : "+se2.a);	// 변경된 값 100이 출력됨
+		System.out.println("se2.b : "+se2.b);	// 새 인스턴스 값 20 출력됨
 		
+		System.out.println("==============================================================================");
+		
+		// 대표적인 static 멤버변수의 예
+		// 수학관련 기능을 제공하는 Math 클래스의 멤버변수는 모두 static
+		double pi = 3.141592;
+		System.out.println("파이값 : " +pi);
+		
+		// Math 클래스에서 상수 Pi가 제공되며 static멤버변수로 제공됨
+		// => 별도의 인스턴스 생성없이 클래스명만으로 접근 가능
+		System.out.println("파이값 : " +Math.PI);
+		
+		// 정수를 다루는 Integer클래스의 멤버변수는 모두 static
+		System.out.println("int형 표현범위 최소값 : " +Integer.MIN_VALUE);
+		System.out.println("int형 표현범위 최대값 : " +Integer.MAX_VALUE);
 		
 	}
 
 }
 
-class Parent2 {
+
+class StaticEx {
+	static int a = 10;		// 정적(static=정적)멤버변수 선언
+	int b = 20;				// 인스턴스 멤버변수 선언
 }
 
-class Child2 extends Parent2 {
-}
 
-//---------------------------------------------------------------------------------------
 
-class HandPhone {
-	String phoneNumber;
 
-	public void call() {
-		System.out.println("HandPhone의 전화 기능!");
-	}
 
-	public void sms() {
-		System.out.println("HandPhone의 문자 기능!");
-	}
-}
 
-// SmartPhone 클래스 정의 - HandPhone 클래스 상속
-class SmartPhone extends HandPhone {
-	String osName;
-	
-	public void kakaoTalk() {
-		System.out.println("스마트폰의 카카오톡 기능!");
-	}
 
-	public void youtube() {
-		System.out.println("스마트폰의 유튜브 기능!");
-	}
-}
+
+
+
+
+
+
+
+
+
+
+

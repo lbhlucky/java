@@ -2,144 +2,80 @@ public class Test4 {
 
 	public static void main(String[] args) {
 		
-		itwillBank4 ib = new itwillBank4();
+		// 생성된 인스턴스를 두 번 가져오기
+//		SingletonTest st = new singletonTest();	// 인스턴스 생성 불가
+		SingletonTest st1 = SingletonTest.getInstance();
+		SingletonTest st2 = SingletonTest.getInstance();
 		
-		ib.accountNo = "111-1111-111";
-		ib.ownerName = "홍길동";
-		ib.insureName = "자동차보험";
+		System.out.println(st1.num+ ", " + st2.num);	// 10, 10 출력
 		
-		ib.printAccountInfo();
+		// 인스턴스 내의 인스턴스 변수 값을 변경하면 나머지도 공유됨
+		st1.num = 100;
+		System.out.println(st1.num+ ", " + st2.num);	// 100, 100 cnffur
+
+		JavaTeacher jt = JavaTeacher.getInstance();
+		JavaTeacher jt1 = JavaTeacher.getInstance();
 		
-		System.out.println("=====================================");
+		System.out.println(jt.teacherName+", "+jt1.teacherName);
 		
-		KakaoBank kb = new KakaoBank();
-		
-		kb.accountNo = "012-3456-789";
-		kb.ownerName = "카카오";
-		kb.deposit(1000000);
-		kb.withdraw(50000);
-		kb.kakaoPayBalance = 30000;
-		
-		kb.printAccountInfo();
+		jt.teacherName = "이연태";
+		System.out.println(jt.teacherName+", "+jt1.teacherName);
 		
 	}
 
 }
 
-class Account4{
-	/*
-	 * 은행계좌(Account) 클래스 정의 멤버변수 
-	 * 1) 계좌번호(accountNo, 문자열), ex) "111-1111-111" 
-	 * 2) 예금주명(ownerName, 문자열), ex) "홍길동"
-	 * 3) 현재잔고(balance, 정수) ex) "1000000"
-	 */
+// 1. SingletonTest 클래스 정의 => 싱클톤 디자인 패턴 적용
+class SingletonTest {
 	
-	String accountNo, ownerName;
-	int balance;
-
-	/*
-	 * 메서드 정의
-	 * 1) 입금(deposit)
-	 *    - 매개변수 1개 (정수형 amount)
-	 *    - 리턴값 없음
-	 *    - 입금할 금액(amount)를 전달 받아 현재잔고에 누적 후
-	 *      입금된 금액 : xxxxx원
-	 *      현재 잔고 : xxxx원
-	 * 2) 출금(withdraw)
-	 *    - 매개변수 1개 정수형(amount) - 출금할 금액
-	 *    - 리턴값 있음(int - 출금된 금액)
-	 *    - 출금할 금액(amount)를 전달 받아 현재잔고(balance)와 비교
-	 *      => 만약, 현재잔고보다 출금할 금액이 클 경우 출금 불가능 하므로
-	 *         "출금 불가!(잔액 부족!)" 출력
-	 *         출금할 금액 : xxxx원, 현재잔고 : xxxx원" 출력 후 메서드 종료
-	 *      => 아니면(현재잔고보다 출금할 금액이 크지 않을 경우) 출금 가능하므로
-	 *         출금할 금액만큼 현재잔고(balance)에서 차감한 후
-	 *         출금할 금액 만큼 리턴
-	 */
+	// 1. 생성자 정의
+	private SingletonTest() {}
 	
-	public void deposit(int amount) {
-				
-		balance += amount;
+	// 2. 인스턴스 생성
+	private static SingletonTest instance = new SingletonTest();
+	
+	// 3. Getter 정의
+	public static SingletonTest getInstance() {
 		
-		System.out.println("입금된 금액 : " +amount + "원");
-		System.out.println("입금 후 잔고 " +balance + "원");
-	}
-	
-	public void printAccountInfo() {
-		// 계좌 기본 정보를 출력하는 메서드
-		System.out.println("계좌번호 : " + accountNo);
-		System.out.println("예금주명 : " + ownerName);
-		System.out.println("현재잔고 : " + balance);
+		return instance;
 		
 	}
 	
-
-	public int withdraw(int amount) {
-		
-		
-		System.out.println("현재 잔고 " +balance + "원");
-		if(balance >= amount) {
-			balance -= amount;
-			System.out.println("출금 금액 : " +amount+"원");
-			System.out.println("출금 후 잔고 " +balance + "원");
-		} else{
-			System.out.println("출금 불가!(잔액 부족!)");
-			System.out.println("출금 요청 금액 : " +amount +"원"+", 출금 후 잔고 " +balance + "원");
-			
-			amount = 0;
-		}
-		return amount;
-		
-		
-	}
-		
+	//==============================================================================
+	
+	// 싱글톤 패턴 객체확인을 위한 인스턴스 변수 1개 선언
+	int num = 10;
+	
 }
 
-// Account 클래스를 상속받는 itwillBank 클래스 정의
-// 보험명(insureName, 문자열) 변수 선언
-// 보험계약(contract()) 메서드 정의
-// => 파리미터(String, insureName), 리턴값 없음
-//	  => 전달받은 보험명을 멤버변수에 전달하고
-//		 "계약하신 보험명 : xxx보험입니다." 출력
+// 2. JavaTeacher 클래스 정의 => 싱글톤 패턴 적용
 
-class itwillBank4 extends Account4 {
+class JavaTeacher {
 
-
-	String insureName;
+	String teacherName = "홍진숙";
 	
-	public void contract(String insureName) {
-		this.insureName = insureName;
-		System.out.println("계약하신 보험명 : " +insureName +"입니다.");
+	// 생성자 정의
+	private JavaTeacher() {}
+	
+	// 외부에서 접근할 수 없도록 private 접근제한자 적용
+	// 인스턴스를 생성하지 못하기 때문에 클래스명만으로 접근 가능하도록
+	// static 적용
+	private static JavaTeacher instance = new JavaTeacher();
+	
+	// private 접근제한자로 인해 외부에서 접근하지못하기때문에
+	// 외부에서 접근하기 위한 Getter 메서드 정의
+	// 인스턴스를 생성하지 못하기 때문에 클래스명만으로 접근할 수 있도록
+	// static 적용
+	public static JavaTeacher getInstance() {
+		return instance;
 	}
 	
-	// Account4 클래스의 printAccointinfo() aptjemfmf dhqjfkdleld gkdu
-	// 계좌번호, 예금주명, 현재잔고, 보험명을 출력
-	@Override
-	public void printAccountInfo() {
-		System.out.println("계좌번호 : " + accountNo);
-		System.out.println("예금주명 : " + ownerName);
-		System.out.println("현재잔고 : " + balance);
-		System.out.println("보험명 : " +insureName);
-	}
-		
+
 }
 
-// KakaoBank 클래스 정의 - Accoount4 클래스 상속
-// => 멤버변수 : 카카오페이잔고 (int형 kakaoPayBalance)
-// => printAccountInfo() 메서드 오버라이딩
-//    계좌번호, 예금주명, 현재잔고, 카카오페이잔고 출력
 
-class KakaoBank extends Account4 {
 
-	int kakaoPayBalance;
-	
-	@Override
-	public void printAccountInfo() {
-		System.out.println("계좌번호 : " + accountNo);
-		System.out.println("예금주명 : " + ownerName);
-		System.out.println("현재잔고 : " + balance);
-		System.out.println("카카오페이잔고 : " +kakaoPayBalance);
-	}
 
-	
-}
+
+
+

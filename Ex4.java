@@ -2,126 +2,67 @@ public class Ex4 {
 
 	public static void main(String[] args) {
 		/*
-		 * 메서드 오버라이딩(Method Overriding) - 메서드 재정의
-		 * - 슈퍼클래스로부터 상속받은 메서드와 시그니처가 동일한 메서드를
-		 *   서브클래스에서 새롭게 재정의하는 것!
-		 * - 기존의 슈퍼클래스의 메서드를 수정하여 덮어 쓰는 것!
-		 * - 오버라이딩 이후에는 슈퍼클래스의 메서드는 은닉되어 보이지 않음!
-		 * 
-		 * - 오버라이딩을 사용하는 이유 
-		 * 	 => 코드의 재사용성이 향상되고, 통일성이 제공됨
-		 * 
-		 * - 오버라이딩 단축키 : Alt + Shift + S -> V
-		 * 	 => 자동 오버라이딩을 수행하면 @Override 어노테이션이 붙게됨
-		 *   	오버라이딩 규칙을 위반하면 오류가 발생하도록 함
-		 *   	(ex. 오버로딩, 오타로 인한 이름 입력 오류 등)
-		 *  
-		 * 
-		 * < 오버라이딩 작성 규칙 >
-		 * 1. 슈퍼클래스의 메서드 시그니처 (이름, 파라미터, 리턴타입)가
-		 *    완벽하게 동일해야한다.
-		 * 2. 슈퍼클래스 메서드의 접근제한자보다 범위가 좁아질 수 없다!!
-		 *    (ex. 슈퍼클래스가 public이면 서브클래스도 public여야 한다.)
-		 *    (ex. 슈퍼클래스가 protected이면 서브클래스는 public 또는 protected여야 함!)
+		 * 싱글톤 디자인 패턴 (Singleton Design Patten)
+		 * - 프로그램에서 단 하나뿐인 유일한 객체(인스턴스) => 싱글톤 객체
+		 * - 싱글톤 객체를 사용하여 프로그램을 작성하는 기법을
+		 *   싱글톤 디자인 패턴이라고 한다.
+		 * - 새로운 인스턴스 생성이 불가능하게 하며,
+		 *   미리 생성된 하나의 인스턴스를 모든 참조변수에서 공유해서 사용
+		 *   
+		 *  < 싱글톤 패턴 작성 순서 >
+		 *  1. 객체가 생성되면 안되기 때문에 외부에서 생성자 호출을 못하도록
+		 *     생성자 정의 시 접근제한자를 private으로 선언
+		 *  2. 자신의 클래스 내에서 직접 인스턴스를 생성하여 참조변수에 저장
+		 *     => 참조변수의 접근제한자를 private으로 선언하여 접근 제한
+		 *     => 참조변수를 static 변수로 선언하여 객체 생성없이 로딩
+		 *  3. 생성된 인스턴스를 외부로 리턴하는 Getter를 저으이
+		 *     => static변수를 리턴해야하므로 Getter 메서드로 static으로 선언
 		 */
+		
+		// 접근제한자가 private으로 선언된 생성자 호출이 불가능하므로
+		// SingletonClass 인스턴스 생성이 불가능해진다.
+//		SingletonClass sc = new SingletonClass();
+//		SingletonClass sc2 = new SingletonClass();
+		
+		// static으로 선언된 정적 멤버변수 instance에 접근하여
+		// 미리 생성되어 있는 인스턴스를 가져올 수 있다.
+		// => 외부에서 함부로 값을 변경할 수 없도록 private 접근제한자 적용
+//		SingletonClass sc = SingletonClass.instance;
+//		SingletonClass.instance = null;
 
-		Child4 c = new Child4();
+		// 외부에서 접근할 수 있도록 Getter 메서드를 제공하므로
+		// Getter를 호출하여 생성된 인스턴스를 전달받아 사용할 수 있음
+		// => static 메서드인 getInstance() 메서드를 호출하여 인스턴스 리턴
+		SingletonClass sc = SingletonClass.getInstance();
 		
-		c.childPrn();	// 서브클래스에서 정의한 메서드
-		c.parentPrn();	// 서브클래스에서 오버라이딩된 메서드
-		// => 슈퍼클래스(Parent4의 parentPrn() 메서드는 보이지 않으므로
-		//    접근이 불가능하게 됨(은님됨)
-	
-		System.out.println("====================================================");
-		
-		// Car 클래스를 상속받은 DieselCar 와 ElectricCar 클래스의
-		// 인스턴스를 생성하여 오버라이딩 된 메서드를 각각 호출
-		DieselCar dc = new DieselCar();
-		
-		dc.speedUp();
-		dc.speedDown();
-		dc.addFuel();
-		
-		ElectricCar ec = new ElectricCar();
-		
-		ec.speedUp();
-		ec.speedDown();
-		ec.addFuel();
-		
+		// 참조 변수 sc2에도 동일한 인스턴스를 리턴 받기
+		SingletonClass sc2 = SingletonClass.getInstance();
 	}
 
 }
 
-class Parent4 {
-	public void parentPrn() {
-		System.out.println("슈퍼클래스의 parentPrn() 메서드!");
-	}
-}
-
-class Child4 extends Parent4 {
-	public void childPrn() {
-		System.out.println("서브클래스의 childPrn() 메서드!");
-	}
+class SingletonClass {
 	
-	// 슈퍼클래스로부터 상속받은 parentPrn() 메서드 오버라이딩
-	// => 리턴타입, 이름, 파라미터가 모두 동일해야함
-	// => 접근제한자는 좁아질 수 없음
-	public void parentPrn() {
-		System.out.println("서브클래스에서 오버라이딩된 parentPrn() 메서드!");
-	}
-}
-
-// ----------------------------------------------------------------------------
-
-class Car {
+	// 1. 생성자의 접근제한자를 private으로 선언하여
+	//    외부에서 인스턴스 생성(생성자 호출)못하도록 제한
+	private SingletonClass() {}
 	
-	public void speedUp() {
-		System.out.println("자동차 속력 증가!");
-	}
+	// 2. 자신의 클래스 내에서 직접 인스턴스를 생성하여 참조 변수에 저장
+	// 	  => 이 때, 인스턴스 생성이 불가능하므로 인스턴스 변수 접근 불가능
+	//   	 따라서, 인스턴스 생성 없이도 접근가능하도록 static으로 선언
+	//	  => 또한, 외부에서 변수에 접근하여 함부로 값을 변경하지 못하도록
+	//		 접근제한자를 private으로 선언
+	private static SingletonClass instance = new SingletonClass();
 	
-	public void speedDown() {
-		System.out.println("자동차 속력 감소!");
-	}
-	
-	public void addFuel() {
-		System.out.println("자동차 연료 공급!");
+	// 3. 인스턴스 생성 후 인스턴스가 저장된 멤버변수도 
+	//    접근제한자로 인해 외부에서 접근이 불가능하므로
+	//	  대신 인스턴스를 리턴해주는 Getter()메서드 정의
+	//	  => 이 때, 인스턴스 생성 없이도 호출 가능하도록 static으로 선언
+	public static SingletonClass getInstance() {
+		return instance;
 	}
 	
 	
 }
 
-// 디젤 자동차 - Car클래스 상속
-class DieselCar extends Car {
-	// Car클래스의 메서드 오버라이딩하여 DieselCar만의 기능을 재정의
-	public void speedUp() {
-		System.out.println("DieselCar 방식으로 속력 증가!");
-	}
-	
-	public void speedDown() {
-		System.out.println("DieselCar 방식으로 속력 감소!");
-	}
-	
-	public void addFuel() {
-		System.out.println("주유소에서 디젤 연료 공급!");
-	}
-}
-// 전기 자동차 - Car클래스 상속
-class ElectricCar extends Car {
 
-	@Override	// annotation
-	public void speedUp() {
-		System.out.println("ElectricCar 방식으로 속력 증가!");
-	}
-
-	@Override
-	public void speedDown() {
-		System.out.println("ElectricCar 방식으로 속력 감소!");
-	}
-
-	@Override
-	public void addFuel() {
-		System.out.println("전기 충전소에서 배터리 충전!");
-	}
-	// 자동 오버라이딩 단축키 : Alt + Shift + S => V
-	
-}
