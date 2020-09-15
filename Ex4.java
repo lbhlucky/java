@@ -1,68 +1,167 @@
+import interfaces.RemoteControl;
+
 public class Ex4 {
 
 	public static void main(String[] args) {
 		/*
-		 * 싱글톤 디자인 패턴 (Singleton Design Patten)
-		 * - 프로그램에서 단 하나뿐인 유일한 객체(인스턴스) => 싱글톤 객체
-		 * - 싱글톤 객체를 사용하여 프로그램을 작성하는 기법을
-		 *   싱글톤 디자인 패턴이라고 한다.
-		 * - 새로운 인스턴스 생성이 불가능하게 하며,
-		 *   미리 생성된 하나의 인스턴스를 모든 참조변수에서 공유해서 사용
-		 *   
-		 *  < 싱글톤 패턴 작성 순서 >
-		 *  1. 객체가 생성되면 안되기 때문에 외부에서 생성자 호출을 못하도록
-		 *     생성자 정의 시 접근제한자를 private으로 선언
-		 *  2. 자신의 클래스 내에서 직접 인스턴스를 생성하여 참조변수에 저장
-		 *     => 참조변수의 접근제한자를 private으로 선언하여 접근 제한
-		 *     => 참조변수를 static 변수로 선언하여 객체 생성없이 로딩
-		 *  3. 생성된 인스턴스를 외부로 리턴하는 Getter를 저으이
-		 *     => static변수를 리턴해야하므로 Getter 메서드로 static으로 선언
+		 * 인터페이스(Interface)
+		 * - 어떤 객체와 개발자 사이의 접점(중계)역할
+		 * - 인터페이스 정의 시 class 키워드 대신 interface 키워드를 사용
+		 * - 인터페이스는 상수와 추상메서드만 가질 수 있음
+		 *   1) 상수 : public static final을 사용하여 선언하며 생략도 가능
+		 *   2) 추상메서드 : public abstract를 사용하여 정의하며 생략도 가능
+		 * - 추상클래스와 마찬가지로 객체 생성이 불가능하며, 상속 전용으로 사용
+		 *   단, 데이터타입으로는 사용 가능하므로, 다형성 활용이 가능!
+		 * - 동일한 인터페이스를 구현하는 클래스를 사용하는 경우
+		 *   하나의 인터페이스 타입으로 모든 객체를 컨트롤할 수 있다!
+		 * - 추상클래스보다 강제성이 더 강하다!
+		 *   => 추상클래스는 일부 멤버(메서드)에 대한 강제성을 부여하지만
+		 *      인터페이스는 모든 메서드와 상수에 대한 강제성을 부여함
+		 *
+		 *	< 인터페이스 정의 기본 문법 >
+		 *	 [접근제한자] interface 인터페이스명 {
+		 *			// 상수 선언
+		 *			// 추상메서드 정의
+		 *	}
 		 */
 		
-		// 접근제한자가 private으로 선언된 생성자 호출이 불가능하므로
-		// SingletonClass 인스턴스 생성이 불가능해진다.
-//		SingletonClass sc = new SingletonClass();
-//		SingletonClass sc2 = new SingletonClass();
+		Tv tv = new Tv();
+		tv.turnPower();
+		tv.TvStatus();
 		
-		// static으로 선언된 정적 멤버변수 instance에 접근하여
-		// 미리 생성되어 있는 인스턴스를 가져올 수 있다.
-		// => 외부에서 함부로 값을 변경할 수 없도록 private 접근제한자 적용
-//		SingletonClass sc = SingletonClass.instance;
-//		SingletonClass.instance = null;
-
-		// 외부에서 접근할 수 있도록 Getter 메서드를 제공하므로
-		// Getter를 호출하여 생성된 인스턴스를 전달받아 사용할 수 있음
-		// => static 메서드인 getInstance() 메서드를 호출하여 인스턴스 리턴
-		SingletonClass sc = SingletonClass.getInstance();
+		Audio audio = new Audio();
+		audio.turnPower();
 		
-		// 참조 변수 sc2에도 동일한 인스턴스를 리턴 받기
-		SingletonClass sc2 = SingletonClass.getInstance();
+		System.out.println("===========================================");
+		
+		// 인터페이스를 구현한 클래스가 존재하는 경우
+		// 일반적으로 인터페이스 타입으로 업캐스팅 후에
+		// 공통된 기능을 다형성으로 다루는 것이 보편적
+		// => Tv와 Audio의 부모 인터페이스인 RemoteControl 타입 사용
+		
+		// 인터페이스는 인스턴스 생성(new)불가능! = 추상클래스와 동일
+//		RemoteControl remote = new RemoteControl();
+		
+		// Tv -> RemoteControl 업캐스팅
+		RemoteControl remote = new Tv();	// 업캐스팅 가능
+		remote.turnPower();
+		remote.channelUp();
+		remote.channelDown();
+		remote.changeChannel(3);
+		remote.volumelUp();
+		remote.volumeDown();
+		
+		System.out.println("--------------------------------------------");
+		
+		// Audio -> RemoteControl 업캐스팅
+		remote = new Audio();	// 업캐스팅 가능
+		remote.turnPower();
+		remote.channelUp();
+		remote.channelDown();
+		remote.changeChannel(6);
+		remote.volumelUp();
+		remote.volumeDown();		
+		
 	}
 
 }
 
-class SingletonClass {
+// interfaces 패키지의 RemoteControl 인터페이스를 구현하는
+// 구현체 클래스 Tv 를 정의
+// => 클래스명 뒤에 implements 키워드를 쓰고 뒤에 인터페이스명을 지정
+class Tv implements RemoteControl{
+	boolean isPowerOn = false;
+	// RemoteControl 인터페이스를 구현하기 위해 implements할 경우
+	// 인터페이스 내의 모든 추상메서드를 구현(오버라이딩)해야한다.
 	
-	// 1. 생성자의 접근제한자를 private으로 선언하여
-	//    외부에서 인스턴스 생성(생성자 호출)못하도록 제한
-	private SingletonClass() {}
+	// ※단, 일부 메서드만 구현하고 싶으면 추상클래스로 선언(abstract 키워드 사용)해야한다.
 	
-	// 2. 자신의 클래스 내에서 직접 인스턴스를 생성하여 참조 변수에 저장
-	// 	  => 이 때, 인스턴스 생성이 불가능하므로 인스턴스 변수 접근 불가능
-	//   	 따라서, 인스턴스 생성 없이도 접근가능하도록 static으로 선언
-	//	  => 또한, 외부에서 변수에 접근하여 함부로 값을 변경하지 못하도록
-	//		 접근제한자를 private으로 선언
-	private static SingletonClass instance = new SingletonClass();
-	
-	// 3. 인스턴스 생성 후 인스턴스가 저장된 멤버변수도 
-	//    접근제한자로 인해 외부에서 접근이 불가능하므로
-	//	  대신 인스턴스를 리턴해주는 Getter()메서드 정의
-	//	  => 이 때, 인스턴스 생성 없이도 호출 가능하도록 static으로 선언
-	public static SingletonClass getInstance() {
-		return instance;
+	@Override
+	public void turnPower() {
+		System.out.println("Tv 전원 상태 변경!");
+		
+	}
+
+	@Override
+	public void channelUp() {
+		System.out.println("Tv 채널 증가!");
+		
+	}
+
+	@Override
+	public void channelDown() {
+		System.out.println("Tv 채널 감소!");
+		
+	}
+
+	@Override
+	public void changeChannel(int channel) {
+		System.out.println("Tv 채널 변경 - " + channel +"번!");
+		
+	}
+
+	@Override
+	public void volumelUp() {
+		System.out.println("Tv 볼륨 증가!");
+		
+	}
+
+	@Override
+	public void volumeDown() {
+		System.out.println("Tv 볼륨 감소!");
+		
 	}
 	
+	public void TvStatus() {
+		System.out.println("전원 상태 : " +isPowerOn);
+		System.out.println("최대 채널 : " +MAX_CHANNEL);
+		System.out.println("최소 채널 : " +MIN_CHANNEL);
+		System.out.println("최대 볼륨 : " +MAX_VOLUME);
+		System.out.println("최소 볼륨 : " +MIN_VOLUME);
+	}
 	
 }
+
+class Audio implements RemoteControl {
+
+	@Override
+	public void turnPower() {
+		System.out.println("Audio 전원 상태 변경!");
+		
+	}
+
+	@Override
+	public void channelUp() {
+		System.out.println("Audio 채널 증가!");
+		
+	}
+
+	@Override
+	public void channelDown() {
+		System.out.println("Audio 채널 감소!");
+		
+	}
+
+	@Override
+	public void changeChannel(int channel) {
+		System.out.println("Audio 채널 변경 - " + channel +"번!");
+		
+	}
+
+	@Override
+	public void volumelUp() {
+		System.out.println("Audio 볼륨 증가!");
+		
+	}
+
+	@Override
+	public void volumeDown() {
+		System.out.println("Audio 볼륨 감소!");
+		
+	}
+	
+}
+
+
 
 
