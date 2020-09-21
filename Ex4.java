@@ -1,166 +1,144 @@
-import interfaces.RemoteControl;
 
 public class Ex4 {
 
 	public static void main(String[] args) {
 		/*
-		 * 인터페이스(Interface)
-		 * - 어떤 객체와 개발자 사이의 접점(중계)역할
-		 * - 인터페이스 정의 시 class 키워드 대신 interface 키워드를 사용
-		 * - 인터페이스는 상수와 추상메서드만 가질 수 있음
-		 *   1) 상수 : public static final을 사용하여 선언하며 생략도 가능
-		 *   2) 추상메서드 : public abstract를 사용하여 정의하며 생략도 가능
-		 * - 추상클래스와 마찬가지로 객체 생성이 불가능하며, 상속 전용으로 사용
-		 *   단, 데이터타입으로는 사용 가능하므로, 다형성 활용이 가능!
-		 * - 동일한 인터페이스를 구현하는 클래스를 사용하는 경우
-		 *   하나의 인터페이스 타입으로 모든 객체를 컨트롤할 수 있다!
-		 * - 추상클래스보다 강제성이 더 강하다!
-		 *   => 추상클래스는 일부 멤버(메서드)에 대한 강제성을 부여하지만
-		 *      인터페이스는 모든 메서드와 상수에 대한 강제성을 부여함
-		 *
-		 *	< 인터페이스 정의 기본 문법 >
-		 *	 [접근제한자] interface 인터페이스명 {
-		 *			// 상수 선언
-		 *			// 추상메서드 정의
-		 *	}
+		 * 인터페이스의 필요성(장점)
+		 * 3. 상속 관계가 없는 클래스끼리 관계 부여 가능 => 다형성 확장
+		 *   - 기존에 다른 클래스를 상속중일 때 다중 상속이 불가능한데
+	     *	   인터페이스를 활용하여 상속관계가 아닌 객체간에
+		 *     공통 인터페이스 제공으로 새로운 상속 관계 부여가 가능
+		 *   - 관계가 없는 객체의 경우 공통 타입이 Object 타입뿐이므로
+		 *     Object 타입으로 변환하여 관리는 할 수 있으나,
+		 *     각 객체의 메서드 호출을 위해서는 다시 다운캐스팅이 필요하지만
+		 *     인터페이스를 통해 상속 관계를 부여하고, 인터페이스에서
+		 *     공통메서드를 추상메서드로 제공하는 경우에는
+		 *     별도의 다운캐스팅 및 타입 판별 없이 바로 메서드 호출이 가능해짐
+		 *     
 		 */
 		
-		Tv tv = new Tv();
-		tv.turnPower();
-		tv.TvStatus();
+		Ex4 ex = new Ex4();
+		ex.badCase();
+		ex.goodCase();
 		
-		Audio audio = new Audio();
-		audio.turnPower();
+		int a[] = {1, 2, 3, 4, 5} ;
 		
-		System.out.println("===========================================");
+
+
+	}
+	// 상속관계가 아닌 객체들을 사용하여 다형성을 적용시켜야 할 경우
+	public void badCase() {
+		// HandPhone, DigitalCamera의 공통 타입은 Object 타입 밖에 없음
+		// => 이 때, Object 타입으로 업캐스팅 시 charge() 메서드 호출 불가
+//		Object obj = new HandPhone();
+//		obj.charge();		// Object 타입이므로 호출 불가능한 메서드
+		// 다운캐스팅을 통해 다시 HandPhone 타입으로 변경해야 charge() ghcnf rksmd
 		
-		// 인터페이스를 구현한 클래스가 존재하는 경우
-		// 일반적으로 인터페이스 타입으로 업캐스팅 후에
-		// 공통된 기능을 다형성으로 다루는 것이 보편적
-		// => Tv와 Audio의 부모 인터페이스인 RemoteControl 타입 사용
+//		obj = new DigitalCamera();
+//		obj.charge();		// Object 타입이므로 호출 불가능한 메서드
 		
-		// 인터페이스는 인스턴스 생성(new)불가능! = 추상클래스와 동일
-//		RemoteControl remote = new RemoteControl();
+		// Object[] 타입으로 HandPhone, DigitalCamera 인스턴를 관리
+		Object[] objs = {new HandPhone(), new DigitalCamera()};
 		
-		// Tv -> RemoteControl 업캐스팅
-		RemoteControl remote = new Tv();	// 업캐스팅 가능
-		remote.turnPower();
-		remote.channelUp();
-		remote.channelDown();
-		remote.changeChannel(3);
-		remote.volumelUp();
-		remote.volumeDown();
+		// for문을 사용하여 배열 objs의 모든 인스턴스에 차례대로 접근하여ㅑ
+		// 각각 타입에 맍는 다운 개스팅 수행 후 charge() 메서드 호출
+		for (int i = 0; i < objs.length ; i++) {
+			Object o = objs[i];
+			if(o instanceof HandPhone) {
+				// HandPhone 타입으로 다운캐스팅 가능
+				HandPhone hp = (HandPhone)o;
+				hp.charge();
+			} else if(o instanceof DigitalCamera) {
+				// DigitalCamera 타입으로 다운캐스팅 가능
+				DigitalCamera dc = (DigitalCamera)o;
+				dc.charge();
+			}
+		}
+//		for(Object o : objs) {
+//			
+//		}
 		
-		System.out.println("--------------------------------------------");
+	}
+	
+	// 상속관계가 아닌 객체들에게 인터페이스를 활용한 상속관계를 부여한 후
+	// 다형성에 활용할 경우
+	public void goodCase() {
+		// HandPhone2, DigltalCamera2 객체를 담기 위한 타입이
+		//  Object 타입 외에 Chargeable 타입도 가능
+		// => 따라서, Chargeable 타입 배열로 두 객체 관리가 가능
+		Chargeable[] objs = {new HandPhone2(), new DigitalCamera2()};
 		
-		// Audio -> RemoteControl 업캐스팅
-		remote = new Audio();	// 업캐스팅 가능
-		remote.turnPower();
-		remote.channelUp();
-		remote.channelDown();
-		remote.changeChannel(6);
-		remote.volumelUp();
-		remote.volumeDown();		
+		// for문을 사용하여 Chargeable[] 타입 내에 모든 객체에 접근하여
+		// 상속받아 구현한 공통 메서드 charge() 메서드 호출
+		// => Chargeable 인터페이스 charge() 메서드가 존재하므로
+		//    별도의 다운캐스팅 없이도 charge() 메서드에 접근가능
+		for(int i = 0 ; i <objs.length ; i++) {
+			objs[i].charge();
+		}
 		
+		
+	// 향상된 for문 사용
+//		for(Chargeable obj : objs) {
+//			obj.charge();	// 공통메서드를 직접 호출 가능(별도의 다운 캐스팅 과정 불필요)
+//		}
 	}
 
 }
 
-// interfaces 패키지의 RemoteControl 인터페이스를 구현하는
-// 구현체 클래스 Tv 를 정의
-// => 클래스명 뒤에 implements 키워드를 쓰고 뒤에 인터페이스명을 지정
-class Tv implements RemoteControl{
-	boolean isPowerOn = false;
-	// RemoteControl 인터페이스를 구현하기 위해 implements할 경우
-	// 인터페이스 내의 모든 추상메서드를 구현(오버라이딩)해야한다.
+class Phone {}
+
+class Camera {}
+
+class HandPhone extends Phone{
+	public void charge() {
+		System.out.println("HandPhone 충전!");
+	}
+}
+
+class DigitalCamera extends Camera{
+	public void charge() {
+		System.out.println("DigitalCamera 충전!");
+	}
+}
+
+// -------------------------------------------------------------------------------------
+// HandPhone 과 DigitalCamera 사이에 특정 관계를 부여해주기 위해
+// 공통 인터페이서인 Chargeable 인터페이스를 정의하고
+// 해당 인터페이스 내에 추상메서드로 charge() 메서드 정의
+interface Chargeable {
 	
-	// ※단, 일부 메서드만 구현하고 싶으면 추상클래스로 선언(abstract 키워드 사용)해야한다.
-	
-	@Override
-	public void turnPower() {
-		System.out.println("Tv 전원 상태 변경!");
-		
-	}
-
-	@Override
-	public void channelUp() {
-		System.out.println("Tv 채널 증가!");
-		
-	}
-
-	@Override
-	public void channelDown() {
-		System.out.println("Tv 채널 감소!");
-		
-	}
-
-	@Override
-	public void changeChannel(int channel) {
-		System.out.println("Tv 채널 변경 - " + channel +"번!");
-		
-	}
-
-	@Override
-	public void volumelUp() {
-		System.out.println("Tv 볼륨 증가!");
-		
-	}
-
-	@Override
-	public void volumeDown() {
-		System.out.println("Tv 볼륨 감소!");
-		
-	}
-	
-	public void TvStatus() {
-		System.out.println("전원 상태 : " +isPowerOn);
-		System.out.println("최대 채널 : " +MAX_CHANNEL);
-		System.out.println("최소 채널 : " +MIN_CHANNEL);
-		System.out.println("최대 볼륨 : " +MAX_VOLUME);
-		System.out.println("최소 볼륨 : " +MIN_VOLUME);
-	}
+	public abstract void charge();
 	
 }
 
-class Audio implements RemoteControl {
+// HandPhone2 클래스 정의 = Phone 클래스 상속 , Chargeable 인터페이스 구현
+class HandPhone2 extends Phone implements Chargeable {
 
 	@Override
-	public void turnPower() {
-		System.out.println("Audio 전원 상태 변경!");
-		
-	}
-
-	@Override
-	public void channelUp() {
-		System.out.println("Audio 채널 증가!");
-		
-	}
-
-	@Override
-	public void channelDown() {
-		System.out.println("Audio 채널 감소!");
-		
-	}
-
-	@Override
-	public void changeChannel(int channel) {
-		System.out.println("Audio 채널 변경 - " + channel +"번!");
-		
-	}
-
-	@Override
-	public void volumelUp() {
-		System.out.println("Audio 볼륨 증가!");
-		
-	}
-
-	@Override
-	public void volumeDown() {
-		System.out.println("Audio 볼륨 감소!");
+	public void charge() {
+		System.out.println("HandPhone2 충전!!!");
 		
 	}
 	
 }
+// DigitalCamera2 클래스 정의 = Camera 클래스 상속, Chargeble 인터페이스 구현
+class DigitalCamera2 extends Camera implements Chargeable {
+
+	@Override
+	public void charge() {
+		System.out.println("DigitalCamera2 충전!!!");
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
 
 
 
