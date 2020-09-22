@@ -2,109 +2,67 @@ public class Ex3 {
 
 	public static void main(String[] args) {
 		/*
-		 * 인터페이스의 필요성(장점)
-		 * 1. 구현의 강제로 표준화
-		 *   - 추상메서드를 갖는 인터페이스를 서브클래스에서 상속받으면
-		 *     반드시 추상메서드를 구현해야함
-		 *     => 따라서, 개발자가 실수로 구현을 빠뜨릴 위험이 없다!
-		 * 2. 모듈 교체가 쉬움
-		 *   - 인터페이스를 통해 업캐스팅을 사용하여 다형성을 적용시켜
-		 *     단순한 모듈(객체) 교체만으로 동일한 코드를 사용하여
-		 *     여러 객체를 다룰 수 있게 됨
-		 *   - 또한, 새로운 모듈이 추가되더라도 기존 인터페이스 구현체라면
-		 *     별도의 코드 수정 없이 객체릐 교체만으로 그대로 사용 가능!
-		 * 3. 상속 관계가 없는 클래스끼리 관계 부여 가능 => 다형성 확장
-		 * 4. 모듈간 독립적 프로그래밍으로 개발 시간 단축   
+		 *  String 클래스의 다양한 메서드
 		 */
 		
-		// 예제> ==== 2. 모듈 교체가 쉬움 ====
-		// 다형성을 활용하지 않는 방법
-		LaserPrinter lp = new LaserPrinter();
-		lp.print("Ex.java");
+		String s1 = "Java Programming!";
+		String s2 = "       아이티윌       부산   교육센터       ";
+		String s3 = "김태희/전지현/송혜교";
 		
-		DotPrinter dp = new DotPrinter();
-		lp.print("Ex.java");
-		// ------------------------------------------------------------------------------------------
-		// 일반적인 다형성 활용
-		// 부모 인터페이스 타입으로 업캐스팅하여 사용
-		// => 인터페이스 내에 존재하는 상수와 추상메서드에만 접근 가능
-		Printer p = new LaserPrinter();
-		p.print("Ex.java");
+		// int length() : 문자열 길이 리턴
+		System.out.println("s1.length() : " + s1.length());	// 공백을 포함한 문자열 전체 길이
 		
-		p = new DotPrinter();
-		p.print("Ex.java");
+		// boolean equals(Object obj) : 문자열 비교
+		System.out.println("s1과 Java Programming는 같은 문자열인가 ? " +s1.equals("JAVA PROGRAMMING!"));
 		
-		// ------------------------------------------------------------------------------------------
+		// boolean equalsignoreCase(Object obj) : 문자열 비교(대소문자 구별 없음) => 로그인시 아이디 비교시 자주 사용
+		System.out.println("s1과 Java Programming는 같은 문자열인가 ? " +s1.equalsIgnoreCase("JAVA PROGRAMMING!"));
 		
-		System.out.println("-------------------------------------------------");
+		// char charAt(int index) : 인덱스(index) 위치의 문자 1개 리턴
+		// => 인덱스 번호는 자동으로 부여되며, 0 ~ 문자열길이-1 까지 사용
+		System.out.println("s1의 5번 인덱스 문자 : " +s1.charAt(5));
+//		System.out.println("s1의 5번 인덱스 문자 : " +s1.charAt(17));	// 예외발생!
+		// => 배열과 마찬가지로 존재하지 않는 인덱스일 경우
+		//    StringindexOutOfBoundsException 발생함!
 		
-		// PrintClient 인스턴스 생성
-		// 별로의 클래스를 정의하여 부모 인터페이스 타입 객체를 전달받아 사용
-		// => 인터페이스의 멤버 외에 별도의 클래스에서 정의한 멤버도 사용 가능
-		PrintClient pc = new PrintClient();
+		// int indexOf(String str) : 특정 문자 또는 문자열의 인덱스 리턴
+		// => 만약, 찾는 문자열이 없을 경우 -1 리턴
+		// => 문자열의 처음(앞)에서 부터 탐색(정방향 탐색)
+		System.out.println("s1의 문자열에 Program의 인덱스는 ? " +s1.indexOf("Program"));
+		System.out.println("s1의 문자열에 Program의 인덱스는?" +s1.indexOf("program"));	// 없으면 -1
 		
-		pc.setPrinter(new LaserPrinter());
-		pc.print("Ex.java");
+		// char 타입으로도 파라미터 전달가능(문자 1개)
+		System.out.println("s1 문자열에 a가 존재하는가? " +s1.indexOf('a'));
 		
-		pc.setPrinter(new DotPrinter());
-		pc.print("Ex.java");
+		// int lastIndexOf(String str)
+		// => 문자열의 마지막(뒤)부터 탐색(역방향 탐색) = 인덱스 번호는 동일
+		System.out.println("s1 문자열에 a가 존재하는가? " +s1.lastIndexOf('a'));	// 원래는 -> last붙이면 <- 이 방향
 		
-		// 만약, InkjetPrinter 가 추가되더라도 Printer 를 구현했다면
-		// 별도로 PrintCLient 클래스를 수정할 필요없이
-		// setPrinter() 메서드 파라미터로 InkgetPrinter 객체만 교체하면
-		// 얼마든 새로운 Printer 타입 객체를 다룰 수 있다.
-//		pc.setPrinter(new InkJetPrinter());
-//		pc.print("Ex.java");
-	}
-
-}
-
-// 2. 모듈 교체가 쉬움
-interface Printer {
-	
-	public void print(String fileName);
-	
-}
-
-class LaserPrinter implements Printer {
-	@Override
-	public void print(String fileName) {
+		// boolean contains(CharSequence s) : 문자열 존재(포함) 여부 리턴
+		System.out.println("s1 문자열에 Program이 존재하는가? " +s1.contains("Program"));
+		System.out.println("s1 문자열에 JSP이 존재하는가? " +s1.contains("JSP"));
 		
-		System.out.println("LaserPrinter로 출력중 - " +fileName);
+		// String replace(char, char) 또는 replace(String, String)
+		// => 문자 또는 문자열 치환
+		System.out.println("s1 문자열의 a를 @으로 치환 : " +s1.replace('a', '@'));
+		System.out.println("s1 문자열의 Java를 JSP으로 치환 : " +s1.replace("Java", "JSP"));
+		
+		// substring() : 부분 문자열 추출
+		// substring(int beginIndex) : beginIndex 부터 끝까지 추출
+		System.out.println("s1의 5번 인덱스부터 끝까지 추출 : " +s1.substring(5));
+		//substring(int beginIndex, int endIndex) : beginIndex - endIndex-1 까지 추출
+		System.out.println("s1의 5번 인덱스부터 끝까지 추출 : " +s1.substring(5, 12));
 		
 	}
-	
+
 }
 
-class DotPrinter implements Printer {
-	@Override
-	public void print(String fileName) {
-	
-		System.out.println("DotPrinter로 출력중 - " +fileName);
-	
-	}	
-	
-}
 
-class PrintClient {
-	
-	private Printer printer;	// 인터페이스 타입 참조변수 선언
 
-	// 외부로부터 Printer 타입 인스턴스를 전달받아 초기화하는 Setter 정의
-	public void setPrinter(Printer printer) {
-		// Printer 타입으로 전달받을 수 있는 인스턴스는
-		// LaserPrinter, DotPrinter
-		this.printer = printer;
-		
-	}
-	
-	public void print(String fileName) {
-		// Printer 타입 객체 내의 print() 메서드 호출하여
-		// 전달받은 fileName에 내용 출력하도록 요청
-		printer.print(fileName);
-	}
-	
-}
+
+
+
+
 
 
 

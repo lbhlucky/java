@@ -1,132 +1,127 @@
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Ex {
 
 	public static void main(String[] args) {
 		/*
-		 * java.lang 패키지
-		 *  - 자바에서 기본이 되는 패키지
-		 *  - 자주 상용되는 자바 클래스와 인터페이스가 위치함
-		 *  - 별도의 import없이도 접근 가능한 패키지
-		 *  - Object, String, Integer, System 등이 위치함
+
 		 * Object클래스
-		 *  - 자바의 모든 클래스의 최상위 슈퍼클래스
-		 *  - 별도로 클래스를 상속받지 않으면 자동으로 상속되는 클래스
-		 *    => 따라서, 모든 클래스는 Object클래스의 멤버를 사용 가능
-		 *  - 대표적인 메서드
-		 *   1) equals() : 두 객체가 같은지 비교 후 결과값 리턴
-		 *      => 같은 주소를 참조하는지 동등 비교(==) 수행함
-		 *      => 일반적으로 두 객체가 같은지를 비교하는 것은
-		 *         두 객체의 멤버변수 값이 같은지를 비교하는 것이므로
-		 *         equals() 메서드를 그대로 사용하지 않고
-		 *         오버라이딩하여 객체 내의 참조변수 비교를 수행하도록 함
-		 *      - 자바에서 제공되는 API의 대부분의 클래스들은
-		 *        equals() 메서드가 오버라이딩 되어 있으므로
-		 *        두 객체 같의 실제 데이터에 대한 동등 비교가 가능
-		 *        (ex. String, Wrapper 클래스 등...)
-		 *   2) toString() : 어떤 객체의 정보를 문자열로 리턴
+		 *  2) toString() : 어떤 "객체의 정보"를 "문자열"로 리턴
+		 *    
+		 *    - 일반적으로 개발자 입장에서 객체의 정보는 객체가 갖는
+		 *      멤버변수들에 저장된 값을 의미하지만,
+		 *      Object 클래스의 toString() 메서드는 객체의 참조변수 값이 아닌
+		 *      객체 고유의 값(주소값)을 문자열로 리턴해준다
+		 *    
+		 *    - 따라서, 개발자가 원하는 멤버변수 값을 리턴받기 위해서는
+		 *      toString() 메서드를 오버라이딩하여, 
+		 *      멤버변수들을 문자열로 결합하여 리턴하도록 해야함
+		 *     
+		 *    - 만약, 출력문에 참조변수명.toString() 메서드를 전달하면
+		 *      객체의 정보를 문자열로 리턴받아 출력하는데,
+		 *      이 때, 출력문에는 toString()_ 메서드 호출 부분 생략가능
+		 *     
+		 *    - 자바에서 제공하는 API 대부분은 해당 객체의 값을 리턴하도록
+		 *      toString() 메서드가 오버라이딩 되어 있다.
+		 *      (ex. String, Date 클래스 등...)
+		 *    - 자동 생성 단축기 : Alt + Shift + S -> S
 		 */
 		
-		Person p1 = new Person("홍길동", "901010 - 1234567");
-		Person p2 = new Person("홍길동", "901010 - 1234567");
+//		객체의 정보 : 객체가 가진 멤버변수
+		Person p = new Person("홍길동", 20, "901010-1234567");
 		
-		// Object 클래스의 equals() 메서드를 사용하여 두 객체가 같은 지 비교
-		if(p1.equals(p2)) {
-			System.out.println("p1과 p2는 주소값이 같다!");
-		} else {
-			System.out.println("p1과 p2는 주소값이 다르다");
-		}
+		System.out.println("Person 클래스 객체 p 의 정보 : "+p.toString());
+		// => 객체 p가 갖는 정보를 문자열로 리턴받아 출력
+		//    이 때, 객체의 정보는 참조변수의 값이 아닌 고유값이 출력됨
 		
-		System.out.println("--------------------------------------------");
-		Person2 p3 = new Person2("홍길동", "901010-1234567");
-		Person2 p4 = new Person2("홍길동", "901010-1234567");
+		System.out.println("Person 클래스 객체 p 의 정보 : "+p);
+		// => toString() 메서드를 생략하고 "출력문"에 참조변수만 사용해도
+		//	  toString() 메서드를 사용한 것과 동일한 결과가 출력됨 = 생략가능
 		
-		// Object 클래스로부터 상속받아 오버라이딩된
-		// equals() 메서드를 사용하여 두 객체가 같은지 비교
-		// => 오버라이딩 된 equals() 메서드는 두 객체의 멤버변수 비교
-		if(p3.equals(p4)) {
-			System.out.println("p3,p4의 실제값이 같다!");
-		} else {
-			System.out.println("p3, p4의 실제값이 다르다");
-		}
+		// getClass() : 해당 객체의 클래스 정보를 리턴
+		System.out.println("p.getClass() : " + p.getClass());
+
+		// getClass() 메서드의 리턴타입은 Class 클래스 타입이며
+		// 해당 객체의 getName() 메서드 호출 시 클래스명만 리턴받을 수   있음
+		System.out.println("p.getClass().getName() : " + p.getClass().getName());
+		
+		// hashCode() : 해당 객체의 고유 식별값(해시코드값  != 주소값)
+		System.out.println("p.hashCode() : " + p.hashCode());
+		
+		// 결국 Object 클래스의 toString() 메서드가 리턴하는 값은
+		// getClass().getName()의 리턴값과 '@' 기호와
+		// hashCode() 리턴값을 16진수로 변환한 값을 문자열로 결합한 값이다.
+		
+		System.out.println("===========================================================");
+		
+		Person2 p2 = new Person2("홍길동", 20, "901010-1234567");
+		
+		// d오버라이딩 된 toString() 메서드 호출
+		System.out.println("Person 클래스 객체 p2 의 정보 : "+p2.toString());
+		System.out.println("Person 클래스 객체 p2 의 정보 : "+p2);
+		
+		// toString() 리턴값이 String 타입이므로 String 타입 변수 저장도 가능
+		String info = p2.toString();
+//		String info = p2;			// 오류 발생!		
+		// 변수에 toString() 메서드의 리턴값 저장 시 toString() 생략 불가!
+		System.out.println(info);
+		
+		System.out.println("---------------------------------------------------------------");
+		// toString() 메서드가 오버라이딩 되어 있는 API에 : Date 클래스
+		// Date 클래스 : 날짜 정보를 관리하는 클래스
+		
+		Date d1 = new Date();
+		// 날짜 정보를 출력문을 사용하여 출력
+		System.out.println(d1.toString());
+		System.out.println(d1);
+		
+		// ArrayList 클래스 : java.util
+		ArrayList list = new ArrayList();
+		
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		System.out.println("list 객체에 저장된 데이터 : " + list);
 		
 	}
 
 }
 
 class Person {
+	
 	String name;
+	int age;
 	String jumin;
 	
-	public Person(String name, String jumin) {
-//		super();
+	public Person(String name, int age, String jumin) {
+		super();
 		this.name = name;
-		this.jumin = jumin;
-	}
-	
-	
-}
-
-class Person2 {
-	String name;
-	String jumin;
-	
-	public Person2(String name, String jumin) {
-//		super();
-		this.name = name;
+		this.age = age;
 		this.jumin = jumin;
 	}
 
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((jumin == null) ? 0 : jumin.hashCode());
-//		result = prime * result + ((name == null) ? 0 : name.hashCode());
-//		return result;
-//	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + ((jumin == null) ? 0 : jumin.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
 
-	// Object 클래스의 equals() 메서드 오버라이딩
-	// 메서드 호출 주체의 멤버변수와 메서드 파라미터 객체의 멤버변수를
-	// 서로 비교하여 모두 같으면 true 리턴하고,
-	// 하나라도 다르면 false 리턴
-//	@Override
-//	public boolean equals(Object obj) {		//  Object obj = p2 동일(업캐스팅)
-//		// p1.equals(p2)이므로 메서드 호출 주체 : p1
-//		// 파라미터로 전달된 객체(Object 변수에 저장되는 객체) : p2
-//		boolean result = false;
-//		// Object 타입으로 전달받은 객체는 다시 다운캐스팅해야만 멤버에 접근 가능
-//		// => 다운캐스팅 전 타입 검사 필요 (안정성을 위해)
-//		if(obj instanceof Person2) {
-//			// 결과값이 true 이면 다운캐스팅 가능
-//			Person2 p =(Person2)obj;
-//			
-//			// Person2 타입 참조변수를 통해 p2 객체 멤버변수에 접근가능
-//			if(name.equals(p.name) && jumin.equals(p.jumin)) {
-//				
-//				result = true;
-//				// 만약, boolean 타입변수를 사용하지 않을 경우
-//				// return true; 문장을 실행해도 돌일함
-//			}
-//			
-//		}
-//		return result;
-//		// 만약, boolean 타입변수를 사용하지 않을 경우
-//		// return false; 문장을 실행해도 돌일함
-//	}
-//	
-	
-	//====================================================================================
-	// equals() 메서드 오버라이딩 자동 수행 단축키
-	// Alt + Shift + S -> h
-	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)	// this는 내 인스턴스 주소, obj는 매개변수에 전달받은 주소
+		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Person2 other = (Person2) obj;
+		Person other = (Person) obj;
+		if (age != other.age)
+			return false;
 		if (jumin == null) {
 			if (other.jumin != null)
 				return false;
@@ -140,7 +135,78 @@ class Person2 {
 		return true;
 	}
 	
+}
+
+
+class Person2 {
+	
+	String name;
+	int age;
+	String jumin;
+	
+	public Person2(String name, int age, String jumin) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.jumin = jumin;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + ((jumin == null) ? 0 : jumin.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		if (age != other.age)
+			return false;
+		if (jumin == null) {
+			if (other.jumin != null)
+				return false;
+		} else if (!jumin.equals(other.jumin))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	// toString() 메서드 오버라이딩 수동
+//	@Override
+//	public String toString() {
+//		// 현재 클래스의 멤버변수를 문자열로 결합하여 리턴
+//		return name + ", " + age + ", " + jumin;
+//	}
+	
+	// toString() 메서드 오버라이딩 자동 : 단축키 - Alt + Shift + S -> S
+	@Override
+	public String toString() {
+		return "Person2 [name=" + name + ", age=" + age + ", jumin=" + jumin + "]";
+	}
+	
+	
+	
+	
 	
 }
+
+
+
+
+
 
 
